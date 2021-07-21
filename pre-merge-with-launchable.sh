@@ -17,8 +17,9 @@ function record() {
 
 trap record EXIT
 
-echo "Build name: $BUILD_NAME"
-echo
-echo "Running Launchable subset 😎"
+(
+  set +x
+  echo "Running Launchable subset 😎"
+)
 
 ./gradlew test $(<subset.txt)
