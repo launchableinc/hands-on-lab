@@ -1,4 +1,4 @@
-name: Efficient pull request validation for Gradle example
+name: Pre-merge tests
 
 on:
   pull_request:
