@@ -17,3 +17,4 @@ jobs:
         java-version: 1.8
     - name: Run tests with Gradle
       run: ./post-merge.sh
+      env: LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
