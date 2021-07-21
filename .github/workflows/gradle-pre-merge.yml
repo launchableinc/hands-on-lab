@@ -1,4 +1,4 @@
-name: Efficient pull request validation for Gradle example
+name: Pull request tests
 
 on:
   pull_request:
@@ -23,6 +23,5 @@ jobs:
 
     - name: Run tests with Gradle and Launchable
       run: ./pre-merge.sh
-      working-directory: .
       env:
         GITHUB_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
