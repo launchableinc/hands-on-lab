@@ -1,9 +1,6 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 BUILD_NAME=${GITHUB_RUN_ID:=local-$(date +%s)}
 
-(
-  set +x
-  echo "Running full test suite 😺"
-)
+echo "Running full test suite 😺"
 
 ./gradlew test
