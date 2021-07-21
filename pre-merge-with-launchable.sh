@@ -11,7 +11,7 @@ echo "> Sending changes in build $BUILD_NAME to Launchable..."
 launchable record build --name "$BUILD_NAME" --source src=.
 
 echo "> Getting a subset of tests to run for $BUILD_NAME from Launchable..."
-launchable subset --target 25% --build "$BUILD_NAME" gradle src/test/java >subset.txt
+launchable subset --confidence 90% --build "$BUILD_NAME" gradle src/test/java >subset.txt
 
 echo "> Launchable subset for $BUILD_NAME contents:"
 cat subset.txt
