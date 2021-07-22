@@ -1,7 +1,7 @@
 #!/bin/bash -e
 BUILD_NAME=${GITHUB_RUN_ID:=local-$(date +%s)}
 
-echo "> Installing Launchable CLI..."
+echo "> Installing the Launchable CLI..."
 pip3 install --user launchable~=1.0 >/dev/null
 
 echo "> Verifying connectivity to Launchable..."
