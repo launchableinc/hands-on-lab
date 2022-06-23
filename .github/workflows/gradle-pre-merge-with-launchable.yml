@@ -2,6 +2,7 @@ name: Pre-merge tests with Launchable
 
 on:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
