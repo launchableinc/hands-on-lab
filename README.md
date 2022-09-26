@@ -14,7 +14,7 @@ Final State
 
 - [Hands-on 1. Setup repository](HANDSON1.md)
 - [Hands-on 2. Introduce Launchable command](HANDSON2.md)
-- [Hands-on 3. Run test with predictive test selection]()
+- [Hands-on 3. Run test with predictive test selection](HANDSON3.md)
 - [Hands-on 4. Run tests on parallel]()
 
 
