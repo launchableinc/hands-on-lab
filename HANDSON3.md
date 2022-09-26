@@ -19,7 +19,7 @@ $ git push origin PR2
 
 ## Confirm model performance
 
-TODO
+TODO(Konboi): explain simulation page and paste screen shot
 
 ## Stop observation mode
 

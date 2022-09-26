@@ -19,6 +19,8 @@ $ git push origin PR1
 
 ## Install Launchable command
 
+TODO(Konboi): explain launchable command overview
+
 Let's install the Launchable command. The Launchable command is made of Python and requires Java in some commands. But this demo project is using Java and already set up it, so don't need to install Java this time.
 
 
@@ -254,6 +256,8 @@ FInally, use this subset result for testing.
        - name: Launchable record tests
          run: launchable record tests --session $( cat test_session.txt ) maven ./**/target/surefire-reports
 ```
+
+TODO(Konboi): explain observation page and add screen shots
 
 If you succeeded the test, merge this branch to main. And you can check the subset impact at observation page on the WebApp.
 
