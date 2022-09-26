@@ -183,8 +183,11 @@ If you could check the log, edit to report test results to Launchable.
        - name: Test
          run: mvn test
 +      - name: Launchable record tests
++        if: always()
 +        run: launchable record tests --session $(cat test_session.txt) maven ./**/target/surefire-reports
 ```
+
+TODO:Konboi to explain why add `if always()`
 
 ![image](https://user-images.githubusercontent.com/536667/192182845-9602cf0f-8626-420c-8a17-75555d457448.png)
 ![image](https://user-images.githubusercontent.com/536667/192182874-864aab9b-6571-4b40-aa4a-1cb687aaa8e0.png)
