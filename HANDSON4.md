@@ -163,3 +163,8 @@ If you success, your configuration like this
 ![image](https://user-images.githubusercontent.com/536667/192206848-ebafacf9-6702-4f12-8f35-29a2e2f63bf3.png)
 
 This concludes the hands-on session. Next, let's see how it works in a real project.
+
+___
+
+Prev: [Hands-on 2](HANDSON3.md)
+

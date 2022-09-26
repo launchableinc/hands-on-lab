@@ -261,3 +261,8 @@ TODO(Konboi): explain observation page and add screen shots
 
 If you succeeded the test, merge this branch to main. And you can check the subset impact at observation page on the WebApp.
 
+___
+
+Prev: [Hands-on 1](HANDSON1.md)
+Next: [Hands-on 3](HANDSON3.md)
+

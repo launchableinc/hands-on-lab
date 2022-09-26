@@ -187,4 +187,8 @@ You learned how to see model performance and use it. And, you can confirm new te
 Next, let's run test in parallel.
 
 
+___
+
+Prev: [Hands-on 2](HANDSON2.md)
+Next: [Hands-on 4](HANDSON4.md)
 
