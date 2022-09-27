@@ -2,7 +2,7 @@
 
 In this section, edit the configuration to test in parallel.
 
-1. Change Move launchable subset command to primary
+1. Move `launchable subset` command to primary
 1. Run test on parallel (worker1 ~ 4)
 
 Before starting it, make a new branch `PR3`.
@@ -12,9 +12,9 @@ $ git switch -c PR3
 $ git push origin PR3
 ```
 
-## Change Move launchable subset command to primary
+## Move `launchable subset` command to primary
 
-In this part, change launchable subset command from worker node to primary node and pass the subset id to workers from primary instead of the test session.
+In this part, move `launchable subset` command from worker node to primary node and pass the subset id to workers from primary instead of the test session.
 
 TODO(Konboi): explain split subset
 
@@ -42,7 +42,7 @@ TODO(Konboi): explain split subset
 +        id: issue_subset_id
 +        run: |
 +          mvn test-compile
-+          launchable subset --session $( cat test_session.txt ) --target 75% --split maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-id.txt
++          launchable subset --session $( cat test_session.txt ) --target 75% --split maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset-id.txt
 +          subset_id=$(cat launchable-subset-id.txt)
 +          echo "::set-output name=subset_id::$subset_id"
    worker-node-1:

@@ -1,6 +1,6 @@
 # Hands-on 3. Run test with predictive test selection
 
-In this section, edit`.github/workflows/re-merge.md` and confirm your model performance and how to adjust subset target.
+In this section, edit`.github/workflows/pre-merge.md` and confirm your model performance and how to adjust subset target.
 You'll do
 
 1. Confirm model performance

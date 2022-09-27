@@ -1,6 +1,6 @@
 # Hands-on 2. Introduce Launchable command
 
-In this section, edit`.github/workflows/re-merge.md` and setup [Launchable command](https://github.com/launchableinc/cli).
+In this section, edit`.github/workflows/pre-merge.md` and setup [Launchable command](https://github.com/launchableinc/cli).
 You'll do
 
 1. Install Launchable command
@@ -45,7 +45,7 @@ Next, Let's access Launchable use by API Key. Set API Key to ENV.
 
 `.github/workflows/pre-merge.yml`
 ```diff
-pull_request:
+   pull_request:
    workflow_dispatch:
 
 +env:
@@ -164,24 +164,24 @@ If you could check the log, edit to report test results to Launchable.
 
 `.github/workflows/pre-merge.yml`
 ```diff
-         with:
-           java-version: 11
-           distribution: "adopt"
-+      - uses: actions/setup-python@v3
-+        with:
-+          python-version: '3.10'
-+      - name: Install Launchable command
-+        run: pip install --user --upgrade launchable~=1.0
-       - name: Test
-         run: mvn test
-
-...
-
-         with:
-           java-version: 11
-           distribution: "adopt"
-+      - name: Restore test session
-+        run: echo -n '${{needs.primary-node.outputs.test_session}}' > test_session.txt
+  worker-node-1:
+    runs-on: ubuntu-latest
+    needs: [ primary-node ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: "adopt"
++     - uses: actions/setup-python@v3
++       with:
++         python-version: '3.10'
++     - name: Install Launchable command
++       run: pip install --user --upgrade launchable~=1.0
++     - name: Restore test session
++       run: echo -n '${{needs.primary-node.outputs.test_session}}' > test_session.txt
+      - name: Test
+        run: mvn test
        - name: Test
          run: mvn test
 +      - name: Launchable record tests
