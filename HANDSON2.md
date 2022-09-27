@@ -45,7 +45,7 @@ Next, Let's access Launchable use by API Key. Set API Key to ENV.
 
 `.github/workflows/pre-merge.yml`
 ```diff
-pull_request:
+   pull_request:
    workflow_dispatch:
 
 +env:
