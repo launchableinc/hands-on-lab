@@ -42,7 +42,7 @@ TODO(Konboi): explain split subset
 +        id: issue_subset_id
 +        run: |
 +          mvn test-compile
-+          launchable subset --session $( cat test_session.txt ) --target 75% --split maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-id.txt
++          launchable subset --session $( cat test_session.txt ) --target 75% --split maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset-id.txt
 +          subset_id=$(cat launchable-subset-id.txt)
 +          echo "::set-output name=subset_id::$subset_id"
    worker-node-1:
