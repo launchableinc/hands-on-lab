@@ -1,6 +1,6 @@
 # Hands-on 2. Introduce Launchable command
 
-In this section, edit`.github/workflows/re-merge.md` and setup [Launchable command](https://github.com/launchableinc/cli).
+In this section, edit`.github/workflows/pre-merge.md` and setup [Launchable command](https://github.com/launchableinc/cli).
 You'll do
 
 1. Install Launchable command
