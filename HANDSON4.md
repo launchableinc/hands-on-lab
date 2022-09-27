@@ -14,7 +14,7 @@ $ git push origin PR3
 
 ## Move `launchable subset` command to primary
 
-In this part, change launchable subset command from worker node to primary node and pass the subset id to workers from primary instead of the test session.
+In this part, move `launchable subset` command from worker node to primary node and pass the subset id to workers from primary instead of the test session.
 
 TODO(Konboi): explain split subset
 
