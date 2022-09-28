@@ -166,5 +166,5 @@ This concludes the hands-on session. Next, let's see how it works in a real proj
 
 ___
 
-Prev: [Hands-on 2](HANDSON3.md)
+Prev: [Hands-on 3](HANDSON3.md)
 
