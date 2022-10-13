@@ -197,18 +197,6 @@ If the test fails, GitHub Actions will suspend after jobs. Then, test results wo
 
 This is a last section of #2, Let's setup `launchable subset` with [observation mode](https://docs.launchableinc.com/features/predictive-test-selection/observing-subset-behavior).
 
-First, check your model performance on WebApp. Click sidebar, `Predictive Test Selection > Simulate`
-
-
-
-![Screen Shot 2022-10-13 at 10 02 24](https://user-images.githubusercontent.com/536667/195475187-de97b3c7-01d4-4166-80c3-6b780cbbc0f9.png)
-
-This model has the potential to select tests that have a 98% chance of failing given a 25% subset target.
-
-![image](https://user-images.githubusercontent.com/536667/195475609-4864c571-84b4-4b60-8225-6c4bdafe1864.png)
-
-Let's set up it.
-
 `.github/workflows/pre-merge.yml`
 ```diff
 # primary-node config
