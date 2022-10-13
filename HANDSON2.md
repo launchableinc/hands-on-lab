@@ -187,7 +187,7 @@ If you could check the log, edit to report test results to Launchable.
 +        run: launchable record tests --session $(cat test_session.txt) maven ./**/target/surefire-reports
 ```
 
-TODO:Konboi to explain why add `if always()`
+If the test fails, GitHub Actions will suspend after jobs. Then, test results won’t report to Launchable. So, needs to set `if: always()` to report test results always.
 
 ![image](https://user-images.githubusercontent.com/536667/192182845-9602cf0f-8626-420c-8a17-75555d457448.png)
 ![image](https://user-images.githubusercontent.com/536667/192182874-864aab9b-6571-4b40-aa4a-1cb687aaa8e0.png)
