@@ -269,6 +269,8 @@ FInally, use this subset result for testing.
 
 After succeeding the job, you can check the subset impact on WebApp. From the sidebar, `Predictive Test Selection > Observe`
 
+![Screen Shot 2022-10-13 at 10 34 07](https://user-images.githubusercontent.com/536667/195478410-6402773f-d232-46af-8543-24a7f6b67b4f.png)
+
 ![image](https://user-images.githubusercontent.com/536667/195477376-500d318a-b67a-4202-8c90-81ca6048dcc4.png)
 
 If you could confirm a subset impact, merge this branch to main. And you can check the subset impact at observation page on the WebApp.
