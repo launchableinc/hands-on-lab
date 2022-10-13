@@ -19,8 +19,6 @@ $ git push origin PR1
 
 ## Install Launchable command
 
-TODO(Konboi): explain launchable command overview
-
 Let's install the Launchable command. The Launchable command is made of Python and requires Java in some commands. But this demo project is using Java and already set up it, so don't need to install Java this time.
 
 
