@@ -40,6 +40,8 @@ If you could create an API key, open the settings page of Github repository that
 
 ![image](https://user-images.githubusercontent.com/536667/189847897-faf6dfad-25af-494c-8f05-ef1e582dd846.png)
 
+TODO: Add enable hands-on mode from configuration page
+
 ___
 
 Next: [Hands-on 2](HANDSON2.md)
