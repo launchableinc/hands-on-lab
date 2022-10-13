@@ -16,7 +16,22 @@ $ git push origin PR3
 
 In this part, move `launchable subset` command from worker node to primary node and pass the subset id to workers from primary instead of the test session.
 
-TODO(Konboi): explain split subset
+With a split subset, you can generate a subset of  tests and then call Launchable once in each worker to get the bin of tests for that runner. ( [doc](https://docs.launchableinc.com/features/predictive-test-selection/requesting-and-running-a-subset-of-tests/replacing-static-parallel-suites-with-a-dynamic-parallel-subset) )
+
+First, change subset target value to try split subset command.
+
+```diff
+       - name: Launchable subset
+         run: |
+           mvn test-compile
+-          launchable subset --session $( cat test_session.txt ) --target 25% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
++          launchable subset --session $( cat test_session.txt ) --target 75% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
+           cat launchable-subset.txt
+       - name: Test
+         run: mvn test -Dsurefire.includesFile=launchable-subset.txt
+```
+
+Next, setup split subset configraution.
 
 ```diff
    primary-node:
