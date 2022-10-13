@@ -195,7 +195,19 @@ If the test fails, GitHub Actions will suspend after jobs. Then, test results wo
 
 ## `launchable record subset` (Predictive Test Selection)
 
-This is a last section of #2, let's setup `launchable subset` with [observation mode]().
+This is a last section of #2, Let's setup `launchable subset` with [observation mode](https://docs.launchableinc.com/features/predictive-test-selection/observing-subset-behavior).
+
+First, check your model performance on WebApp. Click sidebar, `Predictive Test Selection > Simulate`
+
+
+
+![Screen Shot 2022-10-13 at 10 02 24](https://user-images.githubusercontent.com/536667/195475187-de97b3c7-01d4-4166-80c3-6b780cbbc0f9.png)
+
+This model has the potential to select tests that have a 98% chance of failing given a 25% subset target.
+
+![image](https://user-images.githubusercontent.com/536667/195475609-4864c571-84b4-4b60-8225-6c4bdafe1864.png)
+
+Let's set up it.
 
 `.github/workflows/pre-merge.yml`
 ```diff
@@ -231,10 +243,10 @@ e.g)
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
 |-----------|--------------|--------------------------|----------------------------|
-| Subset    |            2 |                  49.9956 |                   0.6664   |
-| Remainder |            2 |                  50.0044 |                   0.666517 |
+| Subset    |            1 |                  12.9032 |                  0.0133333 |
+| Remainder |            3 |                  87.0968 |                  0.09      |
 |           |              |                          |                            |
-| Total     |            4 |                 100      |                   1.33292  |
+| Total     |            4 |                 100      |                  0.103333  |
 
 Run `launchable inspect subset --subset-id XXX` to view full subset details
 example.MulTest
@@ -255,9 +267,11 @@ FInally, use this subset result for testing.
          run: launchable record tests --session $( cat test_session.txt ) maven ./**/target/surefire-reports
 ```
 
-TODO(Konboi): explain observation page and add screen shots
+After succeeding the job, you can check the subset impact on WebApp. From the sidebar, `Predictive Test Selection > Observe`
 
-If you succeeded the test, merge this branch to main. And you can check the subset impact at observation page on the WebApp.
+![image](https://user-images.githubusercontent.com/536667/195477376-500d318a-b67a-4202-8c90-81ca6048dcc4.png)
+
+If you could confirm a subset impact, merge this branch to main. And you can check the subset impact at observation page on the WebApp.
 
 ___
 
