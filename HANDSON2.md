@@ -19,8 +19,6 @@ $ git push origin PR1
 
 ## Install Launchable command
 
-TODO(Konboi): explain launchable command overview
-
 Let's install the Launchable command. The Launchable command is made of Python and requires Java in some commands. But this demo project is using Java and already set up it, so don't need to install Java this time.
 
 
@@ -153,7 +151,7 @@ In this case, use Github Actions specific feature outputs to pass test session v
 +          launchable record session --build ${{ github.run_id }} > test_session.txt
 +          test_session=$(cat test_session.txt)
 +          echo $test_session
-+          echo "::set-output name=test_session::$test_session"
++          echo "test_session=$test_session" >> $GITHUB_OUTPUT
        - name: Compile
          run: mvn compile
 ```
@@ -189,7 +187,7 @@ If you could check the log, edit to report test results to Launchable.
 +        run: launchable record tests --session $(cat test_session.txt) maven ./**/target/surefire-reports
 ```
 
-TODO:Konboi to explain why add `if always()`
+If the test fails, GitHub Actions will suspend after jobs. Then, test results won’t report to Launchable. So, needs to set `if: always()` to report test results always.
 
 ![image](https://user-images.githubusercontent.com/536667/192182845-9602cf0f-8626-420c-8a17-75555d457448.png)
 ![image](https://user-images.githubusercontent.com/536667/192182874-864aab9b-6571-4b40-aa4a-1cb687aaa8e0.png)
@@ -197,7 +195,7 @@ TODO:Konboi to explain why add `if always()`
 
 ## `launchable record subset` (Predictive Test Selection)
 
-This is a last section of #2, let's setup `launchable subset` with [observation mode]().
+This is a last section of #2, Let's setup `launchable subset` with [observation mode](https://docs.launchableinc.com/features/predictive-test-selection/observing-subset-behavior).
 
 `.github/workflows/pre-merge.yml`
 ```diff
@@ -209,7 +207,7 @@ This is a last section of #2, let's setup `launchable subset` with [observation 
 +          launchable record session --build ${{ github.run_id }} --observation > test_session.txt
            test_session=$(cat test_session.txt)
            echo $test_session
-           echo "::set-output name=test_session::$test_session"
+           echo "test_session=$test_session" >> $GITHUB_OUTPUT
 ```
 
 ```diff
@@ -233,15 +231,15 @@ e.g)
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
 |-----------|--------------|--------------------------|----------------------------|
-| Subset    |            2 |                  49.9956 |                   0.6664   |
-| Remainder |            2 |                  50.0044 |                   0.666517 |
+| Subset    |            2 |                  36.4706 |                  0.0516667 |
+| Remainder |            2 |                  63.5294 |                  0.09      |
 |           |              |                          |                            |
-| Total     |            4 |                 100      |                   1.33292  |
+| Total     |            4 |                 100      |                  0.141667  |
 
 Run `launchable inspect subset --subset-id XXX` to view full subset details
 example.MulTest
-example.AddTest
 example.DivTest
+example.AddTest
 example.SubTest
 ```
 
@@ -257,9 +255,13 @@ FInally, use this subset result for testing.
          run: launchable record tests --session $( cat test_session.txt ) maven ./**/target/surefire-reports
 ```
 
-TODO(Konboi): explain observation page and add screen shots
+After succeeding the job, you can check the subset impact on WebApp. From the sidebar, `Predictive Test Selection > Observe`
 
-If you succeeded the test, merge this branch to main. And you can check the subset impact at observation page on the WebApp.
+![Screen Shot 2022-10-13 at 10 34 07](https://user-images.githubusercontent.com/536667/195478410-6402773f-d232-46af-8543-24a7f6b67b4f.png)
+
+![image](https://user-images.githubusercontent.com/536667/195477376-500d318a-b67a-4202-8c90-81ca6048dcc4.png)
+
+If you could confirm a subset impact, merge this branch to main. And you can check the subset impact at observation page on the WebApp.
 
 ___
 

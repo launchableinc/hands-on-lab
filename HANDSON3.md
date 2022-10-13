@@ -19,7 +19,15 @@ $ git push origin PR2
 
 ## Confirm model performance
 
-TODO(Konboi): explain simulation page and paste screen shot
+First, check your model performance on WebApp. Click sidebar, `Predictive Test Selection > Simulate`
+
+![Screen Shot 2022-10-13 at 10 02 24](https://user-images.githubusercontent.com/536667/195475187-de97b3c7-01d4-4166-80c3-6b780cbbc0f9.png)
+
+This model has the potential to select tests that have a 98% chance of failing given a 25% subset target.
+
+![image](https://user-images.githubusercontent.com/536667/195475609-4864c571-84b4-4b60-8225-6c4bdafe1864.png)
+
+Let's adjust the subset target value.
 
 ## Stop observation mode
 
@@ -34,7 +42,7 @@ You could confirm subset impact, so disable observation mode.
 +          launchable record session --build ${{ github.run_id }} > test_session.txt
            test_session=$(cat test_session.txt)
            echo $test_session
-           echo "::set-output name=test_session::$test_session"
+           echo "test_session=$test_session" >> $GITHUB_OUTPUT
 ```
 
 You can confirm the tested test case count was changed like below.
@@ -93,7 +101,7 @@ This time, change target value and confirm the result will change.
          run: |
            mvn test-compile
 -          launchable subset --session $( cat test_session.txt ) --target 50% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
-+          launchable subset --session $( cat test_session.txt ) --target 75% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
++          launchable subset --session $( cat test_session.txt ) --target 25% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
            cat launchable-subset.txt
        - name: Test
          run: mvn test -Dsurefire.includesFile=launchable-subset.txt
@@ -103,10 +111,10 @@ Subset result will change like below. You can confirm the amount of subset candi
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
 |-----------|--------------|--------------------------|----------------------------|
-| Subset    |            3 |                  74.9972 |                   0.99965  |
-| Remainder |            1 |                  25.0028 |                   0.333267 |
+| Subset    |            1 |                  9.63855 |                  0.0133333 |
+| Remainder |            3 |                 90.3614  |                  0.125     |
 |           |              |                          |                            |
-| Total     |            4 |                 100      |                   1.33292  |
+| Total     |            4 |                100       |                  0.138333  |
 ```
 
 ## Add new test case
@@ -151,8 +159,6 @@ Then, this test will fail
 Run `launchable inspect subset --subset-id xxx` to view full subset details
 example.ExponentiationTest
 example.SubTest
-example.MulTest
-example.AddTest
 ```
 
 `launchable record test results on GitHub Actions`
@@ -160,7 +166,7 @@ example.AddTest
 ```
 |   Files found |   Tests found |   Tests passed |   Tests failed |   Total duration (min) |
 |---------------|---------------|----------------|----------------|------------------------|
-|             4 |             4 |              3 |              1 |                 0.0001 |
+|             2 |             2 |              1 |              1 |                 0.0001 |
 ```
 
 Let's implement code
