@@ -50,7 +50,7 @@ Next, setup split subset configraution.
            launchable record session --build ${{ github.run_id }} > test_session.txt
 -          test_session=$(cat test_session.txt)
 -          echo $test_session
--          echo "::set-output name=test_session::$test_session"
+-          echo "test_session=$test_session" >> $GITHUB_OUTPUT
        - name: Compile
          run: mvn compile
 +      - name: Launchable subset
@@ -59,7 +59,7 @@ Next, setup split subset configraution.
 +          mvn test-compile
 +          launchable subset --session $( cat test_session.txt ) --target 75% --split maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset-id.txt
 +          subset_id=$(cat launchable-subset-id.txt)
-+          echo "::set-output name=subset_id::$subset_id"
++          echo "subset_id=$subset_id" >> $GITHUB_OUTPUT
    worker-node-1:
      runs-on: ubuntu-latest
      needs: [ primary-node ]

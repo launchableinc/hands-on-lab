@@ -42,7 +42,7 @@ You could confirm subset impact, so disable observation mode.
 +          launchable record session --build ${{ github.run_id }} > test_session.txt
            test_session=$(cat test_session.txt)
            echo $test_session
-           echo "::set-output name=test_session::$test_session"
+           echo "test_session=$test_session" >> $GITHUB_OUTPUT
 ```
 
 You can confirm the tested test case count was changed like below.

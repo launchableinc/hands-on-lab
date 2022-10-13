@@ -151,7 +151,7 @@ In this case, use Github Actions specific feature outputs to pass test session v
 +          launchable record session --build ${{ github.run_id }} > test_session.txt
 +          test_session=$(cat test_session.txt)
 +          echo $test_session
-+          echo "::set-output name=test_session::$test_session"
++          echo "test_session=$test_session" >> $GITHUB_OUTPUT
        - name: Compile
          run: mvn compile
 ```
@@ -207,7 +207,7 @@ This is a last section of #2, Let's setup `launchable subset` with [observation 
 +          launchable record session --build ${{ github.run_id }} --observation > test_session.txt
            test_session=$(cat test_session.txt)
            echo $test_session
-           echo "::set-output name=test_session::$test_session"
+           echo "test_session=$test_session" >> $GITHUB_OUTPUT
 ```
 
 ```diff
