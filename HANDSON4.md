@@ -16,7 +16,7 @@ $ git push origin PR3
 
 In this part, move `launchable subset` command from worker node to primary node and pass the subset id to workers from primary instead of the test session.
 
-With a split subset, you can generate a subset of  tests and then call Launchable once in each worker to get the bin of tests for that runner. ( [doc](https://docs.launchableinc.com/features/predictive-test-selection/requesting-and-running-a-subset-of-tests/replacing-static-parallel-suites-with-a-dynamic-parallel-subset) )
+With a split subset, you can generate a subset of tests and then call Launchable once in each worker to get the bin of tests for that runner. ( [doc](https://docs.launchableinc.com/features/predictive-test-selection/requesting-and-running-a-subset-of-tests/replacing-static-parallel-suites-with-a-dynamic-parallel-subset) )
 
 First, change subset target value to try split subset command.
 
