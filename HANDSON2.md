@@ -243,15 +243,15 @@ e.g)
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
 |-----------|--------------|--------------------------|----------------------------|
-| Subset    |            1 |                  12.9032 |                  0.0133333 |
-| Remainder |            3 |                  87.0968 |                  0.09      |
+| Subset    |            2 |                  36.4706 |                  0.0516667 |
+| Remainder |            2 |                  63.5294 |                  0.09      |
 |           |              |                          |                            |
-| Total     |            4 |                 100      |                  0.103333  |
+| Total     |            4 |                 100      |                  0.141667  |
 
 Run `launchable inspect subset --subset-id XXX` to view full subset details
 example.MulTest
-example.AddTest
 example.DivTest
+example.AddTest
 example.SubTest
 ```
 
