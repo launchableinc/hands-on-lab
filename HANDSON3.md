@@ -1,23 +1,89 @@
-# Hands-on 3. Run test with predictive test selection
+# Hands-on 3. Run test with the Predictive Test Selection
 
-In this section, edit`.github/workflows/pre-merge.md` and introduce the **subset** command without the observation option.
+In this section, edit`.github/workflows/pre-merge.md` and introduce the **subset** command.
 
 You will:
 
+1. Set up `launchable record subset` (Predictive Test Selection) with the observation option
 1. Disable observation mode
 1. Change subset target value
-1. Add a new test case
+1. Add a new test case and check the Predictive Test Selection works correctly
 
 Before you begin, create a new branch named `PR2`.
 
 ```
+$ git switch main
+$ git pull origin main
 $ git switch -c PR2
 $ git commit --allow-empty -m "introduce subset command"
 $ git push origin PR2
 ```
  Then, create a pull request from `PR2` branch to `main` branch.
 
+ ## Set up "launchable subset" command
+
+
+Let's setup the **launchable subset** command with the [observation mode](https://docs.launchableinc.com/features/predictive-test-selection/observing-subset-behavior) option.
+
+Update `.github/workflows/pre-merge.yml` as follows:
+```diff
+      - name: Launchable verify
+        run: launchable verify
+      - name: launchable record build
+        run: launchable record build --name ${{ github.run_id }}
++     - name: launchable subset
++       run: |
++         launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
++         cat launchable-subset.txt
+      - name: Test
+        run: mvn test
+```
+
+You can view the subset result log in the GitHub Actions log. For example:
+
+```
+|           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
+|-----------|--------------|--------------------------|----------------------------|
+| Subset    |            2 |                  36.4706 |                  0.0516667 |
+| Remainder |            2 |                  63.5294 |                  0.09      |
+|           |              |                          |                            |
+| Total     |            4 |                 100      |                  0.141667  |
+
+Run `launchable inspect subset --subset-id XXX` to view full subset details
+example.MulTest
+example.DivTest
+example.AddTest
+example.SubTest
+```
+
+Next, use this subset result for testing.
+
+```diff
+      - name: Launchable verify
+        run: launchable verify
+      - name: launchable record build
+        run: launchable record build --name ${{ github.run_id }}
+      - name: launchable subset
+        run: |
+          launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
+          cat launchable-subset.txt
+      - name: Test
++       run: mvn test -Dsurefire.includesFile=launchable-subset.txt
+      - name: Launchable record tests
+         run: launchable record tests maven ./**/target/surefire-reports
+```
+
+After the job succeeded, you can check the subset impact on web application. From the sidebar, go to  **Predictive Test Selection > Observe**:
+
+<img src="https://user-images.githubusercontent.com/536667/195478410-6402773f-d232-46af-8543-24a7f6b67b4f.png">
+
+<br>
+
+![image](https://user-images.githubusercontent.com/536667/195477376-500d318a-b67a-4202-8c90-81ca6048dcc4.png)
+
 ## Stop observation mode
+
+If you have confirmed the subset impact, remove the observation option and reduce the test durations.
 
 Edit `.github/workflows/pre-merge.yml` as follows:
 ```diff
