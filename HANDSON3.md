@@ -1,24 +1,25 @@
 # Hands-on 3. Run test with predictive test selection
 
 In this section, edit`.github/workflows/pre-merge.md` and introduce the **subset** command without the observation option.
-You'll do
+
+You will:
 
 1. Disable observation mode
 1. Change subset target value
-1. Add new test case
+1. Add a new test case
 
-Before starting it, make a new branch `PR2`.
+Before you begin, create a new branch named `PR2`.
 
 ```
 $ git switch -c PR2
 $ git commit --allow-empty -m "introduce subset command"
 $ git push origin PR2
 ```
- And create a pull request from `PR2` branch to `main` branch.
+ Then, create a pull request from `PR2` branch to `main` branch.
 
 ## Stop observation mode
 
-`.github/workflows/pre-merge.yml`
+Edit `.github/workflows/pre-merge.yml` as follows:
 ```diff
       - name: launchable record build
         run: launchable record build --name ${{ github.run_id }}
@@ -32,7 +33,7 @@ $ git push origin PR2
         run: mvn test
 ```
 
-You can confirm the tested test case count was changed like below.
+You can confirm that the number of test cases executed has changed as follows:
 
 **Test Log**
 
@@ -81,7 +82,7 @@ You can confirm the tested test case count was changed like below.
     [other options...]
 ```
 
-This time, change target value and confirm the result will change.
+This time, change target value and confirm that the result changes.
 
 ```diff
       - name: launchable record build
@@ -95,7 +96,7 @@ This time, change target value and confirm the result will change.
       - name: Test
 ```
 
-Subset result will change like below. You can confirm the amount of subset candidates was changed from 2 to 1.
+The subset result will change as shown below. You can confirm that the number of subset candidates changes from 2 to 1.
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
 |-----------|--------------|--------------------------|----------------------------|
@@ -107,12 +108,11 @@ Subset result will change like below. You can confirm the amount of subset candi
 
 ## Add new test case
 
-In this section, add new function and test then confirm the added test and related test will be tested.
-You'll add new function `Exponentiation`.
+In this section, add a new function along with its test, and confirm that both the added test and its related tests are executed. You will add new function called `Exponentiation`.
 
-First add test code and dummy method to prevent compile error.
+First, add test code and dummy method to prevent compile errors.
 
-`src/test/java/example/ExponentiationTest.java`
+Create the file `src/test/java/example/ExponentiationTest.java`
 ```java
 package example;
 
@@ -130,7 +130,7 @@ public class ExponentiationTest {
 }
 ```
 
-`src/main/java/example/Exponentiation.java`
+Then, create the file `src/main/java/example/Exponentiation.java`
 ```java
 package example;
 
@@ -141,7 +141,7 @@ public class Exponentiation {
 }
 ```
 
-Then, this test will fail
+At this point, the  test will fail:
 
 ```
 Run `launchable inspect subset --subset-id xxx` to view full subset details
@@ -149,7 +149,7 @@ example.ExponentiationTest
 example.SubTest
 ```
 
-`launchable record test results on GitHub Actions`
+The test results recorded on GitHub Actions will show:
 
 ```
 |   Files found |   Tests found |   Tests passed |   Tests failed |   Total duration (min) |
@@ -157,7 +157,7 @@ example.SubTest
 |             2 |             2 |              1 |              1 |                 0.0001 |
 ```
 
-Let's implement code
+Now, implement the code:
 
 ```java
  public class Exponentiation {
@@ -172,11 +172,11 @@ Let's implement code
  }
 ```
 
-You can confirm `ExponentiationTest.java` and `MulTest.java` were selected.
+You can confirm the both `ExponentiationTest.java` and `MulTest.java` are selected for testing.
 
-Finish, this section.
+Finally, merge PR2 to main to complete this section.
 
-You learned how to see model performance and use it. And, you can confirm new test and related test were selected by launchable subset.
+You have learned how to introduce the **subset** command. You can confirm that the new test and its related tests were selected by **launchable subset**.
 
 ___
 

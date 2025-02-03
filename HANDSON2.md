@@ -7,7 +7,7 @@ You'll do
 1. Install the Launchable command
 1. Set up `launchable record build`
 1. Set up `launchable record tests`
-1. Set up `launchable record subset` (Predictive Test Selection)
+1. Set up `launchable record subset` (Predictive Test Selection) with the observation option
 
 Before you begin, create a new branch named `PR1`.
 
