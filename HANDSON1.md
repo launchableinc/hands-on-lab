@@ -33,6 +33,8 @@ Sign up from the [https://cloudbees.io](https://cloudbees.io). You will create a
 <img src="https://github.com/user-attachments/assets/ed023338-9124-40ca-bd07-fc1bd351c6c8" width="50%">
 
 <br>
+
+You will receive an email to verify account like the below:
 <img src="https://github.com/user-attachments/assets/0d60e2fe-c689-49f6-9028-f724daaebbea" width="50%">
 
 <br>
