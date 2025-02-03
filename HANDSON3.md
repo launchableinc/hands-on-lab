@@ -1,48 +1,35 @@
 # Hands-on 3. Run test with predictive test selection
 
-In this section, edit`.github/workflows/pre-merge.md` and confirm your model performance and how to adjust subset target.
+In this section, edit`.github/workflows/pre-merge.md` and introduce the **subset** command without the observation option.
 You'll do
 
-1. Confirm model performance
 1. Disable observation mode
 1. Change subset target value
 1. Add new test case
-
 
 Before starting it, make a new branch `PR2`.
 
 ```
 $ git switch -c PR2
+$ git commit --allow-empty -m "introduce subset command"
 $ git push origin PR2
 ```
- And create a PR from `PR2` branch to `main` branch.
-
-## Confirm model performance
-
-First, check your model performance on WebApp. Click sidebar, `Predictive Test Selection > Simulate`
-
-![Screen Shot 2022-10-13 at 10 02 24](https://user-images.githubusercontent.com/536667/195475187-de97b3c7-01d4-4166-80c3-6b780cbbc0f9.png)
-
-This model has the potential to select tests that have a 98% chance of failing given a 25% subset target.
-
-![image](https://user-images.githubusercontent.com/536667/195475609-4864c571-84b4-4b60-8225-6c4bdafe1864.png)
-
-Let's adjust the subset target value.
+ And create a pull request from `PR2` branch to `main` branch.
 
 ## Stop observation mode
 
-You could confirm subset impact, so disable observation mode.
-
 `.github/workflows/pre-merge.yml`
 ```diff
-       - name: Launchable record session
-         id: issue_test_session
-         run: |
--          launchable record session --build ${{ github.run_id }} --observation > test_session.txt
-+          launchable record session --build ${{ github.run_id }} > test_session.txt
-           test_session=$(cat test_session.txt)
-           echo $test_session
-           echo "test_session=$test_session" >> $GITHUB_OUTPUT
+      - name: launchable record build
+        run: launchable record build --name ${{ github.run_id }}
+      - name: launchable subset
+        run: |
+          mvn test-compile
+-         launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
++         launchable subset --target 50% maven src/test/java > launchable-subset.txt
+          cat launchable-subset.txt
+      - name: Test
+        run: mvn test
 ```
 
 You can confirm the tested test case count was changed like below.
@@ -97,17 +84,18 @@ You can confirm the tested test case count was changed like below.
 This time, change target value and confirm the result will change.
 
 ```diff
-       - name: Launchable subset
-         run: |
-           mvn test-compile
--          launchable subset --session $( cat test_session.txt ) --target 50% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
-+          launchable subset --session $( cat test_session.txt ) --target 25% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
-           cat launchable-subset.txt
-       - name: Test
-         run: mvn test -Dsurefire.includesFile=launchable-subset.txt
+      - name: launchable record build
+        run: launchable record build --name ${{ github.run_id }}
+      - name: launchable subset
+        run: |
+          mvn test-compile
+-         launchable subset --target 50% maven src/test/java > launchable-subset.txt
++         launchable subset --target 25% maven src/test/java > launchable-subset.txt
+          cat launchable-subset.txt
+      - name: Test
 ```
 
-Subset result will change like below. You can confirm the amount of subset candidates was changed from 2 to 3.
+Subset result will change like below. You can confirm the amount of subset candidates was changed from 2 to 1.
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
 |-----------|--------------|--------------------------|----------------------------|
@@ -190,11 +178,8 @@ Finish, this section.
 
 You learned how to see model performance and use it. And, you can confirm new test and related test were selected by launchable subset.
 
-Next, let's run test in parallel.
-
-
 ___
 
 Prev: [Hands-on 2](HANDSON2.md)
-Next: [Hands-on 4](HANDSON4.md)
+
 
