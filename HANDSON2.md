@@ -2,7 +2,7 @@
 
 In this section, edit`.github/workflows/pre-merge.md` and set up the [Launchable command](https://www.launchableinc.com/docs/resources/cli-reference/).
 
-You'll do
+In this section, you will:
 
 1. Install the Launchable command
 1. Set up `launchable record build`
