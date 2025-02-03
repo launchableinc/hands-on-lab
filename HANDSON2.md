@@ -1,47 +1,49 @@
-# Hands-on 2. Introduce Launchable command
+# Hands-on 2. Introduce the Launchable Command
 
-In this section, edit`.github/workflows/pre-merge.md` and setup [Launchable command](https://github.com/launchableinc/cli).
+In this section, edit`.github/workflows/pre-merge.md` and set up the [Launchable command](https://www.launchableinc.com/docs/resources/cli-reference/).
+
 You'll do
 
-1. Install Launchable command
-1. `launchable record build`
-1. `launchable record tests`
-1. `launchable record subset` (Predictive Test Selection)
+1. Install the Launchable command
+1. Set up `launchable record build`
+1. Set up `launchable record tests`
 
-Before starting it, make a new branch `PR1`.
+Before you begin, create a new branch named `PR1`.
 
-```
+```sh
 $ git switch -c PR1
+$ git commit --allow-empty -m "introduce the Launchable command"
 $ git push origin PR1
 ```
 
- And create a PR from `PR1` branch to `main` branch.
+ Then, create a pull request from the `PR1` branch to `main` branch.
 
-## Install Launchable command
+## Install the Launchable Command
 
-Let's install the Launchable command. The Launchable command is made of Python and requires Java in some commands. But this demo project is using Java and already set up it, so don't need to install Java this time.
+Let's install the Launchable command. The command is written in Python and requires Java for some commands. However, since this hands-on project already uses Java and it is set up it, you don't need to install Java this time.
 
-
-`.github/workflows/pre-merge.yml`
+Update your `.github/workflows/pre-merge.yml` as follows:
 ```diff
-with:
-           java-version: 11
+        with:
+          java-version: 21
+          distribution: "adopt"
++     - uses: actions/setup-python@v5
++       with:
++         python-version: '3.13'
++     - name: Install Launchable command
++       run: pip install --user --upgrade launchable~=1.0
+      - name: Compile
+        run: mvn compile
+          with:
+           java-version: 21
            distribution: "adopt"
-+      - uses: actions/setup-python@v3
-+        with:
-+          python-version: '3.10'
-+      - name: Install Launchable command
-+        run: pip install --user --upgrade launchable~=1.0
-       - name: Compile
-         run: mvn compile
-   worker-node-1:
 ```
 
 If set up correctly, after pushing this change the Launchable command will be installed.
 
-Next, Let's access Launchable use by API Key. Set API Key to ENV.
+Next, Let's access Launchable using your API Key. Set the API key to as an environment variable.
 
-`.github/workflows/pre-merge.yml`
+Update `.github/workflows/pre-merge.yml` by adding:
 ```diff
    pull_request:
    workflow_dispatch:
@@ -65,40 +67,38 @@ Next, Let's access Launchable use by API Key. Set API Key to ENV.
        - name: Test
 ```
 
-Will see verify logs on GitHub Actions if you succeeded.
+You will see verification logs on GitHub Actions if the setup is successful:
 
 ```
-Run launchable verify
-Organization: 'konboi-demo-org'
-Workspace: 'demo'
+Organization: '<YOUR ORGANIZATION NAME>'
+Workspace: '<YOUR WORKSPACE NAME>'
 Proxy: None
-Platform: 'Linux-5.15.0-1019-azure-x86_64-with-glibc2.31'
-Python version: '3.10.6'
+Platform: 'Linux-6.8.0-1017-azure-x86_64-with-glibc2.39'
+Python version: '3.12.8'
 Java command: 'java'
-launchable version: '1.47.2'
+launchable version: '1.97.0'
 Your CLI configuration is successfully verified 🎉
 ```
 
-## launchable record build
+## Set up "launchable record build" command
 
-Let's try to record test results.
+Now, let's record the build information.
 
-Launchable uses commit history to train models so need to full clone.
+Launchable uses commit history to train models, so you need to use a full clone.
 
-`.github/workflows/pre-merge.yml`
+Update `.github/workflows/pre-merge.yml` as follows:
 ```diff
 steps:
-       - uses: actions/checkout@v3
+       - uses: actions/checkout@v5
 +        with:
 +          fetch-depth: 0
-       - uses: actions/setup-java@v3
+       - uses: actions/setup-java@v4
          with:
            java-version: 11
 ```
 
-Execute `launchable record build` command
+Next, execute the **launchable record build** command.
 
-`.github/workflows/pre-merge.yml`
 ```diff
 run: pip install --user --upgrade launchable~=1.0
        - name: Launchable verify
@@ -110,7 +110,7 @@ run: pip install --user --upgrade launchable~=1.0
    worker-node-1:
 ```
 
-You can see log if you completed to setup
+You can view logs similar to the following if the setup is successful:
 
 ```
 Launchable recorded 1 commit from repository /home/runner/work/hands-on/hands-on
@@ -120,151 +120,31 @@ Launchable recorded build 3096604891 to workspace organization/workspace with co
 | .      | .      | 5ea0a739271071dfbdacd330b0cc28c307151a04 |
 ```
 
-## launchable record tests
+## Set up "launchable record tests" command
 
-Next, try to record test results.
+This is a final section of #2, Try to report test results using by the **record test** command.
+If the test fail, GitHub Actions will stop the job and the test results will not be reported to Launchable. Therefore, you need to set `if: always()` so that  test results are always reported.
 
-When report test results to Launchable, Launchable command require [test session](). But in this project, the test will be run at the worker node.
-So need to issue a test session at the primary node and pass it to the worker node.
-
-In this case, use Github Actions specific feature outputs to pass test session value from primary node to worker node.
-
-
-`.github/workflows/pre-merge.yml`
+Update `.github/workflows/pre-merge.yml` as follows:
 ```diff
- jobs:
-   primary-node:
-     runs-on: ubuntu-latest
-+    outputs:
-+      test_session: ${{ steps.issue_test_session.outputs.test_session}}
-     steps:
-       - uses: actions/checkout@v3
-         with:
-...
-
-         run: launchable verify
-       - name: Launchable record build
-         run: launchable record build --name ${{ github.run_id }}
-+      - name: Launchable record session
-+        id: issue_test_session
-+        run: |
-+          launchable record session --build ${{ github.run_id }} > test_session.txt
-+          test_session=$(cat test_session.txt)
-+          echo $test_session
-+          echo "test_session=$test_session" >> $GITHUB_OUTPUT
-       - name: Compile
-         run: mvn compile
-```
-
-If successful, you can check `builds/<BUILD NAME>/test_sessions/<TEST SESSION ID>` on Github Actions console log.
-
-If you could check the log, edit to report test results to Launchable.
-
-`.github/workflows/pre-merge.yml`
-```diff
-  worker-node-1:
-    runs-on: ubuntu-latest
-    needs: [ primary-node ]
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          java-version: 11
-          distribution: "adopt"
-+     - uses: actions/setup-python@v3
-+       with:
-+         python-version: '3.10'
-+     - name: Install Launchable command
-+       run: pip install --user --upgrade launchable~=1.0
-+     - name: Restore test session
-+       run: echo -n '${{needs.primary-node.outputs.test_session}}' > test_session.txt
+      - name: Compile
+        run: mvn compile
       - name: Test
         run: mvn test
-       - name: Test
-         run: mvn test
-+      - name: Launchable record tests
-+        if: always()
-+        run: launchable record tests --session $(cat test_session.txt) maven ./**/target/surefire-reports
++     - name: Launchable record tests
++       if: always()
++       run: launchable record tests maven ./**/target/surefire-reports
 ```
 
-If the test fails, GitHub Actions will suspend after jobs. Then, test results won’t report to Launchable. So, needs to set `if: always()` to report test results always.
+If everything is set up correctly, you can view the test results on Launchable as shown below:
 
-![image](https://user-images.githubusercontent.com/536667/192182845-9602cf0f-8626-420c-8a17-75555d457448.png)
-![image](https://user-images.githubusercontent.com/536667/192182874-864aab9b-6571-4b40-aa4a-1cb687aaa8e0.png)
+<img src="https://github.com/user-attachments/assets/f83dd1e6-bf9e-4091-964c-da665ffd764d" width="50%">
 
-
-## `launchable record subset` (Predictive Test Selection)
-
-This is a last section of #2, Let's setup `launchable subset` with [observation mode](https://docs.launchableinc.com/features/predictive-test-selection/observing-subset-behavior).
-
-`.github/workflows/pre-merge.yml`
-```diff
-# primary-node config
-       - name: Launchable record session
-         id: issue_test_session
-         run: |
--          launchable record session --build ${{ github.run_id }} > test_session.txt
-+          launchable record session --build ${{ github.run_id }} --observation > test_session.txt
-           test_session=$(cat test_session.txt)
-           echo $test_session
-           echo "test_session=$test_session" >> $GITHUB_OUTPUT
-```
-
-```diff
-# worker-node config
-         run: pip install --user --upgrade launchable~=1.0
-       - name: Restore test session
-         run: echo -n '${{needs.primary-node.outputs.test_session}}' > test_session.txt
-+      - name: Launchable subset
-+        run: |
-+          mvn test-compile
-+          launchable subset --session $( cat test_session.txt ) --target 50% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
-+          cat launchable-subset.txt
-       - name: Test
-         run: mvn test
-       - name: Launchable record tests
-```
-
-you can see the subset result log on the GitHub Actions log.
-
-e.g)
-```
-|           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
-|-----------|--------------|--------------------------|----------------------------|
-| Subset    |            2 |                  36.4706 |                  0.0516667 |
-| Remainder |            2 |                  63.5294 |                  0.09      |
-|           |              |                          |                            |
-| Total     |            4 |                 100      |                  0.141667  |
-
-Run `launchable inspect subset --subset-id XXX` to view full subset details
-example.MulTest
-example.DivTest
-example.AddTest
-example.SubTest
-```
-
-FInally, use this subset result for testing.
-
-```diff
-           launchable subset --session $( cat test_session.txt ) --target 50% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
-           cat launchable-subset.txt
-       - name: Test
--        run: mvn test
-+        run: mvn test -Dsurefire.includesFile=launchable-subset.txt
-       - name: Launchable record tests
-         run: launchable record tests --session $( cat test_session.txt ) maven ./**/target/surefire-reports
-```
-
-After succeeding the job, you can check the subset impact on WebApp. From the sidebar, `Predictive Test Selection > Observe`
-
-![Screen Shot 2022-10-13 at 10 34 07](https://user-images.githubusercontent.com/536667/195478410-6402773f-d232-46af-8543-24a7f6b67b4f.png)
-
-![image](https://user-images.githubusercontent.com/536667/195477376-500d318a-b67a-4202-8c90-81ca6048dcc4.png)
-
-If you could confirm a subset impact, merge this branch to main. And you can check the subset impact at observation page on the WebApp.
+If you have could confirmed the test result, merge this branch to main.
 
 ___
 
 Prev: [Hands-on 1](HANDSON1.md)
 Next: [Hands-on 3](HANDSON3.md)
+
 

@@ -1,51 +1,105 @@
-# Hands-on 3. Run test with predictive test selection
+# Hands-on 3. Run test with the Predictive Test Selection
 
-In this section, edit`.github/workflows/pre-merge.md` and confirm your model performance and how to adjust subset target.
-You'll do
+In this section, edit`.github/workflows/pre-merge.md` and introduce the **subset** command.
 
-1. Confirm model performance
+You will:
+
+1. Set up `launchable record subset` (Predictive Test Selection) with the observation option
 1. Disable observation mode
 1. Change subset target value
-1. Add new test case
+1. Add a new test case and check the Predictive Test Selection works correctly
 
-
-Before starting it, make a new branch `PR2`.
+Before you begin, create a new branch named `PR2`.
 
 ```
+$ git switch main
+$ git pull origin main
 $ git switch -c PR2
+$ git commit --allow-empty -m "introduce subset command"
 $ git push origin PR2
 ```
- And create a PR from `PR2` branch to `main` branch.
+ Then, create a pull request from `PR2` branch to `main` branch.
 
-## Confirm model performance
+ ## Set up "launchable subset" command
 
-First, check your model performance on WebApp. Click sidebar, `Predictive Test Selection > Simulate`
 
-![Screen Shot 2022-10-13 at 10 02 24](https://user-images.githubusercontent.com/536667/195475187-de97b3c7-01d4-4166-80c3-6b780cbbc0f9.png)
+Let's setup the **launchable subset** command with the [observation mode](https://docs.launchableinc.com/features/predictive-test-selection/observing-subset-behavior) option.
 
-This model has the potential to select tests that have a 98% chance of failing given a 25% subset target.
+Update `.github/workflows/pre-merge.yml` as follows:
+```diff
+      - name: Launchable verify
+        run: launchable verify
+      - name: launchable record build
+        run: launchable record build --name ${{ github.run_id }}
++     - name: launchable subset
++       run: |
++         launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
++         cat launchable-subset.txt
+      - name: Test
+        run: mvn test
+```
 
-![image](https://user-images.githubusercontent.com/536667/195475609-4864c571-84b4-4b60-8225-6c4bdafe1864.png)
+You can view the subset result log in the GitHub Actions log. For example:
 
-Let's adjust the subset target value.
+```
+|           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
+|-----------|--------------|--------------------------|----------------------------|
+| Subset    |            2 |                  36.4706 |                  0.0516667 |
+| Remainder |            2 |                  63.5294 |                  0.09      |
+|           |              |                          |                            |
+| Total     |            4 |                 100      |                  0.141667  |
+
+Run `launchable inspect subset --subset-id XXX` to view full subset details
+example.MulTest
+example.DivTest
+example.AddTest
+example.SubTest
+```
+
+Next, use this subset result for testing.
+
+```diff
+      - name: Launchable verify
+        run: launchable verify
+      - name: launchable record build
+        run: launchable record build --name ${{ github.run_id }}
+      - name: launchable subset
+        run: |
+          launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
+          cat launchable-subset.txt
+      - name: Test
++       run: mvn test -Dsurefire.includesFile=launchable-subset.txt
+      - name: Launchable record tests
+         run: launchable record tests maven ./**/target/surefire-reports
+```
+
+After the job succeeded, you can check the subset impact on web application. From the sidebar, go to  **Predictive Test Selection > Observe**:
+
+<img src="https://user-images.githubusercontent.com/536667/195478410-6402773f-d232-46af-8543-24a7f6b67b4f.png">
+
+<br>
+
+![image](https://user-images.githubusercontent.com/536667/195477376-500d318a-b67a-4202-8c90-81ca6048dcc4.png)
 
 ## Stop observation mode
 
-You could confirm subset impact, so disable observation mode.
+If you have confirmed the subset impact, remove the observation option and reduce the test durations.
 
-`.github/workflows/pre-merge.yml`
+Edit `.github/workflows/pre-merge.yml` as follows:
 ```diff
-       - name: Launchable record session
-         id: issue_test_session
-         run: |
--          launchable record session --build ${{ github.run_id }} --observation > test_session.txt
-+          launchable record session --build ${{ github.run_id }} > test_session.txt
-           test_session=$(cat test_session.txt)
-           echo $test_session
-           echo "test_session=$test_session" >> $GITHUB_OUTPUT
+      - name: launchable record build
+        run: launchable record build --name ${{ github.run_id }}
+      - name: launchable subset
+        run: |
+          mvn test-compile
+-         launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
++         launchable subset --target 50% maven src/test/java > launchable-subset.txt
+          cat launchable-subset.txt
+      - name: Test
+        run: mvn test
 ```
 
-You can confirm the tested test case count was changed like below.
+You can confirm that the number of test cases executed has changed as follows:
 
 **Test Log**
 
@@ -94,20 +148,21 @@ You can confirm the tested test case count was changed like below.
     [other options...]
 ```
 
-This time, change target value and confirm the result will change.
+This time, change target value and confirm that the result changes.
 
 ```diff
-       - name: Launchable subset
-         run: |
-           mvn test-compile
--          launchable subset --session $( cat test_session.txt ) --target 50% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
-+          launchable subset --session $( cat test_session.txt ) --target 25% maven --test-compile-created-file target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst > launchable-subset.txt
-           cat launchable-subset.txt
-       - name: Test
-         run: mvn test -Dsurefire.includesFile=launchable-subset.txt
+      - name: launchable record build
+        run: launchable record build --name ${{ github.run_id }}
+      - name: launchable subset
+        run: |
+          mvn test-compile
+-         launchable subset --target 50% maven src/test/java > launchable-subset.txt
++         launchable subset --target 25% maven src/test/java > launchable-subset.txt
+          cat launchable-subset.txt
+      - name: Test
 ```
 
-Subset result will change like below. You can confirm the amount of subset candidates was changed from 2 to 3.
+The subset result will change as shown below. You can confirm that the number of subset candidates changes from 2 to 1.
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
 |-----------|--------------|--------------------------|----------------------------|
@@ -119,12 +174,11 @@ Subset result will change like below. You can confirm the amount of subset candi
 
 ## Add new test case
 
-In this section, add new function and test then confirm the added test and related test will be tested.
-You'll add new function `Exponentiation`.
+In this section, add a new function along with its test, and confirm that both the added test and its related tests are executed. You will add new function called `Exponentiation`.
 
-First add test code and dummy method to prevent compile error.
+First, add test code and dummy method to prevent compile errors.
 
-`src/test/java/example/ExponentiationTest.java`
+Create the file `src/test/java/example/ExponentiationTest.java`
 ```java
 package example;
 
@@ -142,7 +196,7 @@ public class ExponentiationTest {
 }
 ```
 
-`src/main/java/example/Exponentiation.java`
+Then, create the file `src/main/java/example/Exponentiation.java`
 ```java
 package example;
 
@@ -153,7 +207,7 @@ public class Exponentiation {
 }
 ```
 
-Then, this test will fail
+At this point, the  test will fail:
 
 ```
 Run `launchable inspect subset --subset-id xxx` to view full subset details
@@ -161,7 +215,7 @@ example.ExponentiationTest
 example.SubTest
 ```
 
-`launchable record test results on GitHub Actions`
+The test results recorded on GitHub Actions will show:
 
 ```
 |   Files found |   Tests found |   Tests passed |   Tests failed |   Total duration (min) |
@@ -169,7 +223,7 @@ example.SubTest
 |             2 |             2 |              1 |              1 |                 0.0001 |
 ```
 
-Let's implement code
+Now, implement the code:
 
 ```java
  public class Exponentiation {
@@ -184,17 +238,14 @@ Let's implement code
  }
 ```
 
-You can confirm `ExponentiationTest.java` and `MulTest.java` were selected.
+You can confirm the both `ExponentiationTest.java` and `MulTest.java` are selected for testing.
 
-Finish, this section.
+Finally, merge PR2 to main to complete this section.
 
-You learned how to see model performance and use it. And, you can confirm new test and related test were selected by launchable subset.
-
-Next, let's run test in parallel.
-
+You have learned how to introduce the **subset** command. You can confirm that the new test and its related tests were selected by **launchable subset**.
 
 ___
 
 Prev: [Hands-on 2](HANDSON2.md)
-Next: [Hands-on 4](HANDSON4.md)
+
 
