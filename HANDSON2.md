@@ -39,6 +39,20 @@ Update your `.github/workflows/pre-merge.yml` as follows:
            distribution: "adopt"
 ```
 
+<details>
+<summary>Raw text for copying</summary>
+
+```
+- uses: actions/setup-python@v5
+  with:
+  python-version: '3.13'
+- name: Install Launchable command
+  run: pip install --user --upgrade launchable~=1.0
+```
+
+</details>
+<br>
+
 If set up correctly, after pushing this change the Launchable command will be installed.
 
 Next, Let's access Launchable using your API Key. Set the API key to as an environment variable.
@@ -66,6 +80,25 @@ Update `.github/workflows/pre-merge.yml` by adding:
          run: mvn compile
        - name: Test
 ```
+
+<details>
+<summary>Raw texts for copying</summary>
+
+```
+env:
+  LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
+```
+
+<br>
+
+```
+- name: Launchable verify
+  run: launchable verify
+```
+
+</details>
+
+<br>
 
 You will see verification logs on GitHub Actions if the setup is successful:
 
@@ -97,6 +130,17 @@ steps:
            java-version: 11
 ```
 
+<details>
+<summary>Raw text for copying</summary>
+
+```
+with:
+  fetch-depth: 0
+```
+
+</details>
+<br>
+
 Next, execute the **launchable record build** command.
 
 ```diff
@@ -109,6 +153,17 @@ run: pip install --user --upgrade launchable~=1.0
          run: mvn compile
    worker-node-1:
 ```
+
+<details>
+<summary>Raw text for copying</summary>
+
+```
+- name: Launchable record build
+  run: launchable record build --name ${{ github.run_id }}
+```
+
+</details>
+<br>
 
 You can view logs similar to the following if the setup is successful:
 
@@ -135,6 +190,18 @@ Update `.github/workflows/pre-merge.yml` as follows:
 +       if: always()
 +       run: launchable record tests maven ./**/target/surefire-reports
 ```
+
+<details>
+<summary>Raw text for copying</summary>
+
+```
+- name: Launchable record tests
+  if: always()
+  run: launchable record tests maven ./**/target/surefire-reports
+```
+
+</details>
+<br>
 
 If everything is set up correctly, you can view the test results on Launchable as shown below:
 

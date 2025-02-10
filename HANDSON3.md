@@ -39,6 +39,19 @@ Update `.github/workflows/pre-merge.yml` as follows:
         run: mvn test
 ```
 
+<details>
+<summary>Raw text for copying</summary>
+
+```
+- name: launchable subset
+  run: |
+    launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
+    cat launchable-subset.txt
+```
+
+</details>
+<br>
+
 You can view the subset result log in the GitHub Actions log. For example:
 
 ```
@@ -73,6 +86,16 @@ Next, use this subset result for testing.
          run: launchable record tests maven ./**/target/surefire-reports
 ```
 
+<details>
+<summary>Raw text for copying</summary>
+
+```
+run: mvn test -Dsurefire.includesFile=launchable-subset.txt
+```
+
+</details>
+<br>
+
 After the job succeeded, you can check the subset impact on web application. From the sidebar, go to  **Predictive Test Selection > Observe**:
 
 <img src="https://user-images.githubusercontent.com/536667/195478410-6402773f-d232-46af-8543-24a7f6b67b4f.png">
@@ -98,6 +121,16 @@ Edit `.github/workflows/pre-merge.yml` as follows:
       - name: Test
         run: mvn test
 ```
+
+<details>
+<summary>Raw text for copying</summary>
+
+```
+launchable subset --target 50% maven src/test/java > launchable-subset.txt
+```
+
+</details>
+<br>
 
 You can confirm that the number of test cases executed has changed as follows:
 
@@ -161,6 +194,16 @@ This time, change target value and confirm that the result changes.
           cat launchable-subset.txt
       - name: Test
 ```
+<details>
+<summary>Raw text for copying</summary>
+
+```
+launchable subset --target 25% maven src/test/java > launchable-subset.txt
+```
+
+</details>
+<br>
+
 
 The subset result will change as shown below. You can confirm that the number of subset candidates changes from 2 to 1.
 ```
@@ -237,6 +280,19 @@ Now, implement the code:
    }
  }
 ```
+<details>
+<summary>Raw text for copying</summary>
+
+```java
+int exp = 1;
+for (; y != 0; y--) {
+  exp = new Mul().calc(exp, x);
+}
+return exp;
+```
+
+</details>
+<br>
 
 You can confirm the both `ExponentiationTest.java` and `MulTest.java` are selected for testing.
 
