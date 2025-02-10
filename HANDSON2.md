@@ -203,11 +203,12 @@ Update `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
-If everything is set up correctly, you can view the test results on Launchable as shown below:
+If everything is set up correctly, you can view the test results on Launchable as shown below: (A URL is displayed in the GitHub Actions log)
 
 <img src="https://github.com/user-attachments/assets/f83dd1e6-bf9e-4091-964c-da665ffd764d" width="50%">
 
-If you have could confirmed the test result, merge this branch to main.
+
+If you have could confirmed the test result, **merge** this branch to main.
 
 ___
 
