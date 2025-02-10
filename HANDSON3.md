@@ -52,7 +52,7 @@ Update `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
-You can view the subset result log in the GitHub Actions log. For example:
+You can view the subset result log in the GitHub Actions log. For example (The ratio between the subset and the rest may vary.):
 
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
@@ -132,7 +132,7 @@ launchable subset --target 50% maven src/test/java > launchable-subset.txt
 </details>
 <br>
 
-You can confirm that the number of test cases executed has changed as follows:
+You can confirm that the number of test cases executed has changed as follows (The test count may vary.):
 
 **Test Log**
 
@@ -205,7 +205,7 @@ launchable subset --target 25% maven src/test/java > launchable-subset.txt
 <br>
 
 
-The subset result will change as shown below. You can confirm that the number of subset candidates changes from 2 to 1.
+The subset result will change as shown below. You can confirm that the number of subset candidates changes from 2 to 1. (The ratio between the subset and the rest may vary.)
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
 |-----------|--------------|--------------------------|----------------------------|
