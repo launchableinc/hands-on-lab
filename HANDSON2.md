@@ -1,12 +1,15 @@
 # Hands-on 2. Introduce the Launchable Command
 
-In this section, edit`.github/workflows/pre-merge.md` and set up the [Launchable command](https://www.launchableinc.com/docs/resources/cli-reference/).
+In this section, you will set up the [Launchable command](https://www.launchableinc.com/docs/resources/cli-reference/) in the CI and configure it to send test results to the server.
 
-In this section, you will:
+Then, you will:
 
 1. Install the Launchable command
 1. Set up `launchable record build`
 1. Set up `launchable record tests`
+
+You will be editing `.github/workflows/pre-merge.yaml` and setting up the [Launchable command](https://www.launchableinc.com/docs/resources/cli-reference/).
+
 
 Before you begin, create a new branch named `PR1`.
 
