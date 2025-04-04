@@ -1,8 +1,9 @@
 # Hands-on 1. Setup repository
 
-In this section, you will
+In this section, you will set up the environment for the hands-on. Specifically, you will do the following:
 
 1. Create a repository for hands-on
+1. Clone a forked repository to your local
 1. Create a CloudBees Platform account
 1. Connect a repository for hands-on use to the CloudBees Platform.
 1. Issue an API Key and set it as GitHub Actions' secret
@@ -20,7 +21,17 @@ Then, after entering the required information, click **Crete repository from tem
 
 <img src="https://user-images.githubusercontent.com/536667/191436235-e1347cf9-dcb2-41e8-89b6-df3bf2accf5d.png" width="50%">
 
-## 2. Create a CloudBees Platform Account
+
+## 2. Clone a forked repository to your local
+
+Let's clone a forked repository
+
+```sh
+git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME launchable-hands-on
+cd launchable-hands-on
+```
+
+## 3. Create a CloudBees Platform Account
 
 Sign up from the [https://cloudbees.io](https://cloudbees.io). You will create a user account for hands-on use.
 
@@ -44,7 +55,7 @@ After verifying your account, you can skip the tour.
 
 <img src="https://github.com/user-attachments/assets/7c40d6d6-a13c-4d9f-80ae-54f84228642f" with="50%">
 
-## 3. Connect a repository for hands-on use to the CloudBees platform.
+## 4. Connect a repository for hands-on use to the CloudBees platform.
 
 Once your account has been created, let’s connect the GitHub repository for hands-on use to the CloudBees Platform component.
 
@@ -68,7 +79,7 @@ Then, connect the repository that you created for the hands-on use.
 
 Finally, click the **Launchable** menu.
 
-## 4. Issue an API Key and set.
+## 5. Issue an API Key and set.
 
 After connecting the repository, issue an API key. You can also issue an API key from the Settings page.
 
@@ -90,7 +101,7 @@ If you could create an API key, open the settings page of GitHub repository that
 
 ![image](https://user-images.githubusercontent.com/536667/189847897-faf6dfad-25af-494c-8f05-ef1e582dd846.png)
 
-## 5. Ask the SE to set it to hands-on mode.
+## 6. Ask the SE to set it to hands-on mode.
 
 TODO: enable hands-on mode
 
