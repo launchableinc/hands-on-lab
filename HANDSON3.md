@@ -1,6 +1,8 @@
 # Hands-on 3. Run test with the Predictive Test Selection
 
-In this section, edit`.github/workflows/pre-merge.md` and introduce the **subset** command.
+In this section, you will introduce Predictive Test Selection (PTS) and verify that Launchable returns test relevant to your changes.
+
+Then, edit `.github/workflows/pre-merge.md` and introduce the **subset** command.
 
 You will:
 
