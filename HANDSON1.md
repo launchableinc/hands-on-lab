@@ -103,7 +103,11 @@ Once you create an API key, open the settings page of GitHub repository that cre
 
 ## 6. Ask the SE to set it to hands-on mode.
 
-TODO: enable hands-on mode
+Set these workspaces to the special "hands on lab" mode from [the backoffice app](https://launchableinc.retool.com/apps/35915976-8697-11ef-88ca-d3dd93c47314/admin%20operation/issue%20triage%20%26%20PTS%20activation)
+
+> [!NOTE]
+> This can be only done by people who has special access.
+
 
 ___
 
