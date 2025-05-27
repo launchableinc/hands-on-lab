@@ -95,11 +95,11 @@ Click **Copy** key and copy API key.
 
 <img src="https://github.com/user-attachments/assets/5025328b-fc20-4eb1-b7f2-346aab60e013" width="50%">
 
-If you could create an API key, open the settings page of GitHub repository that created in step 1 and set the API key as `LAUNCHABLE_TOKEN` uner **Secrets > Actions**.
+Once you create an API key, open the settings page of GitHub repository that created in step 1 and set the API key as a repository secret `LAUNCHABLE_TOKEN` under **Secrets and variables > Actions**.
 
-![Screen Shot 2022-09-13 at 17 11 01](https://user-images.githubusercontent.com/536667/189847864-2f38b075-4cce-4272-9383-d0dfa12bbdd1.png)
+![Screenshot from 2025-05-27 08-53-29](https://github.com/user-attachments/assets/956bbc03-599c-4551-8348-51497d0750d6)
 
-![image](https://user-images.githubusercontent.com/536667/189847897-faf6dfad-25af-494c-8f05-ef1e582dd846.png)
+![Screenshot from 2025-05-27 09-01-30](https://github.com/user-attachments/assets/924881cf-c69a-464e-97da-92ba4e43cb0d)
 
 ## 6. Ask the SE to set it to hands-on mode.
 
