@@ -4,9 +4,9 @@ This lab demonstrates how to integrate Launchable with existing simple Java proj
 
 # Table of contens
 
-- [Hands-on 1. Setup repository](HANDSON1.md)
-- [Hands-on 2. Introduce Launchable command](HANDSON2.md)
-- [Hands-on 3. Run test with predictive test selection](HANDSON3.md)
+- [Hands-on 1. Environment setup](HANDSON1.md)
+- [Hands-on 2. Try predictive test selection](HANDSON2.md)
+- [Hands-on 3. Record test results](HANDSON2.md)
 
 
 

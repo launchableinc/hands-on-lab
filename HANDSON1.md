@@ -1,8 +1,8 @@
-# Hands-on 1. Setup repository
+# Hands-on 1. Environment setup
 
 In this section, you will set up the environment for the hands-on. Specifically, you will do the following:
 
-1. Issue an API Key.
+1. Issue an API Key
 1. Install Launchable Command
 
 Let's get started.
@@ -58,7 +58,7 @@ $ docker run --rm cloudbees/launchable:v1.106.2 --help
 ```
 
 
-# Let's Try to Use Launchable Command
+# Let's Try a Launchable Command
 
 Now, let’s test the connection using the launchable command.
 
