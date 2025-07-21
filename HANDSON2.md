@@ -104,3 +104,5 @@ cat subset.txt
 
 What do you think?
 Are the files related to the changes you just made included in the selection?
+
+Once you start recording test results, Launchable will use the results to improve its selection.
