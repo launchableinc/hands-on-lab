@@ -1,4 +1,4 @@
-# Hands-on 1. Environment setup
+# Lab 1. Environment setup
 
 In this section, you will set up the environment for the hands-on. Specifically, you will do the following:
 
@@ -7,14 +7,14 @@ In this section, you will set up the environment for the hands-on. Specifically,
 
 Let's get started.
 
-# Prepare the Project You Want to Integrate Launchable
+# Prepare the Project You Want to Integrate Smart Test
 
 First, get the project you usually work on and want to make testing faster for.
 If you haven’t cloned it yet, use `git clone`. If it’s already cloned, navigate to its directory.
 
-# Prepare Your Launchable Token
+# Prepare Your Smart Test API Token
 
-You need an API token to use Launchable.
+You need an API token to use Smart Test.
 Go to your workspace’s Settings > API Token and generate a new token.
 
 **Node:** If you haven’t created a workspace yet, please refer to `SIGN_UP.md` to set one up.
@@ -33,7 +33,7 @@ Click **Copy** key and copy API key.
 
 # Install Launchable Command
 
-Launchable communicates by using the launchable command-line tool.
+Smart Test communicates by using the launchable command-line tool.
 
 You can install it with pip:
 

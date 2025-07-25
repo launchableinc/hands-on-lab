@@ -1,17 +1,10 @@
 # Hands-On Lab
 
-This lab demonstrates how to integrate Launchable with existing simple Java project. You’ll be able to understand Launchable thorough editing CI configurations and adding a new feature to this project.
+In this workshop, you will see how Smart Test predictive test selection works in your source code repository, and learn how to integrate this into your CI pipeline.
 
 # Table of contens
 
-- [Hands-on 1. Environment setup](HANDSON1.md)
-- [Hands-on 2. Try predictive test selection](HANDSON2.md)
-- [Hands-on 3. Record test results](HANDSON2.md)
-
-
-
-
-
-
-
-
+- [Lab 0. Prerequisites](HANDSON0.md)
+- [Lab 1. Environment setup](HANDSON1.md)
+- [Lab 2. Try predictive test selection](HANDSON2.md)
+- [Lab 3. Incorporate Smart Test into your CI pipeline](HANDSON3.md)
