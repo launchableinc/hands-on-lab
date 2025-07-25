@@ -1,18 +1,11 @@
 # Lab 1. Environment setup
 
-In this section, you will set up the environment for the hands-on. Specifically, you will do the following:
+First, locally clone the repositories you want to try Smart Test with.
+If your test and production code reside in two different repositories, clone both of them.
 
-1. Issue an API Key
-1. Install Launchable Command
+If your production code are split among multiple repositories, we recommend you clone a couple of major ones, just to keep this workshop manageable.
 
-Let's get started.
-
-# Prepare the Project You Want to Integrate Smart Test
-
-First, get the project you usually work on and want to make testing faster for.
-If you haven’t cloned it yet, use `git clone`. If it’s already cloned, navigate to its directory.
-
-# Prepare Your Smart Test API Token
+# Obtain an API token
 
 You need an API token to use Smart Test.
 Go to your workspace’s Settings > API Token and generate a new token.
@@ -31,9 +24,9 @@ Click **Copy** key and copy API key.
 
 <img src="https://github.com/user-attachments/assets/5025328b-fc20-4eb1-b7f2-346aab60e013" width="50%">
 
-# Install Launchable Command
+# Install Launchable command
 
-Smart Test communicates by using the launchable command-line tool.
+You interact with Smart Test using a command line tool called `launchable`.
 
 You can install it with pip:
 
@@ -41,33 +34,22 @@ You can install it with pip:
 pip install --user --upgrade launchable~=1.0
 ```
 
-Alternatively, you can use the provided Docker image:
-
-```
-docker pull cloudbees/launchable:v1.106.2
-```
-
 Let’s check that it’s installed correctly:
 
 ```
 $ launchable --help
-
-or
-
-$ docker run --rm cloudbees/launchable:v1.106.2 --help
 ```
 
+>[!TIP]
+> Alternatively, you can use the `launchable` command in a Docker container: `docker run --rm cloudbees/launchable --help`
 
-# Let's Try a Launchable Command
 
-Now, let’s test the connection using the launchable command.
+# Make sure everything is in order
+
+`launchable verify` command is a convenient way to make sure all the prerequisites are met and the API key is valid:
 
 ```
 $ LAUNCHABLE_TOKEN=<LAUNCHABLE TOKEN> launchable verify
-
-or
-
-$ docker run -e LAUNCHABLE_TOKEN=<LAUNCHABLE_TOKEN> --rm cloudbees/launchable:v1.106.2 verify
 ```
 
 If you see a message like this, you’re all set:

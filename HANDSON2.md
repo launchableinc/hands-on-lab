@@ -7,7 +7,7 @@ and you will gain a better understanding of how it fits in your delivery pipelin
 
 In order to select the right tests for your software, Smart Test needs to know what software you are testing. We call this a **build**.
 
-A build is a specific version of your software that you are testing. It can consists of multiple Git repositories, and in each repository, it points to a specific commit. A build is identified by its name.
+A build is a specific version of your software that you are testing. It can consist of multiple Git repositories, and in each repository, it points to a specific commit. A build is identified by its name.
 
 >  **build** represents the software. Each time you send test results to Smart Test, you record them against a specific build so that Smart Test knows that you ran X tests against Y software with Z results.
 
