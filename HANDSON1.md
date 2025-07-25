@@ -5,7 +5,7 @@ If your test and production code reside in two different repositories, clone bot
 
 If your production code are split among multiple repositories, we recommend you clone a couple of major ones, just to keep this workshop manageable.
 
-# Obtain an API token
+## Obtain an API token
 
 You need an API token to use Smart Test.
 Go to your workspace’s Settings > API Token and generate a new token.
@@ -24,7 +24,7 @@ Click **Copy** key and copy API key.
 
 <img src="https://github.com/user-attachments/assets/5025328b-fc20-4eb1-b7f2-346aab60e013" width="50%">
 
-# Install Launchable command
+## Install Launchable command
 
 You interact with Smart Test using a command line tool called `launchable`.
 
@@ -44,12 +44,19 @@ $ launchable --help
 > Alternatively, you can use the `launchable` command in a Docker container: `docker run --rm cloudbees/launchable --help`
 
 
-# Make sure everything is in order
+The `launchable` command expects an API token to be set in the `LAUNCHABLE_TOKEN` environment variable.
+
+```sh
+export LAUNCHABLE_TOKEN=<API TOKEN>
+```
+
+
+## Make sure everything is in order
 
 `launchable verify` command is a convenient way to make sure all the prerequisites are met and the API key is valid:
 
 ```
-$ LAUNCHABLE_TOKEN=<LAUNCHABLE TOKEN> launchable verify
+$ launchable verify
 ```
 
 If you see a message like this, you’re all set:

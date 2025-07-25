@@ -1,6 +1,6 @@
 # Lab 3. Incorporate Smart Test into your CI pipeline
 
-In this section, you will use a toy Java project in this repository and its delivery pipeline based on GitHub Action, to learn to incorporate Smart Test into its CI pipeline.
+In this section, you will use a toy Java project in this repository and its delivery pipeline based on GitHub Action as an example, to gain better understanding of how to use Smart Test in your CI pipeline.
 
 # Fork this repository
 Click the **Use this template** button to create your own copy of this repository, so that you can make changes in it.
@@ -17,8 +17,8 @@ After entering the required information, click **Crete repository from template*
 Let's clone a forked repository
 
 ```sh
-git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME st-hol
-cd st-hol
+git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME smarttest-workshop
+cd smarttest-workshop
 ```
 
 ## Make Smart Test API token available to GitHub Actions
@@ -272,3 +272,17 @@ If everything is set up correctly, you can view the test results on Launchable a
 You should also see the report from the subset observation:
 
 ![image](https://user-images.githubusercontent.com/536667/195477376-500d318a-b67a-4202-8c90-81ca6048dcc4.png)
+
+## Go live
+If this was a real project, we'd keep the `--observation` flag until we accumulate enough data, then
+evaluate its performance & roll out. In this workshop, we can skip this step and go live right away.
+
+```diff
+      - name: Launchable subset
+        run: |
+          launchable record session --build ${{ github.run_id }} > session.txt
+-         launchable subset --session $(cat session.txt) --observation maven src/test/java > launchable-subset.txt
++         launchable subset --session $(cat session.txt) maven src/test/java > launchable-subset.txt
+      - name: Test
+        run: mvn test
+```
