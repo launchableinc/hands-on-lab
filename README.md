@@ -1,4 +1,4 @@
-```markdown
+
 # Launchable Smart Tests Workshop
 
 ## Workshop Overview
@@ -62,5 +62,3 @@ Throughout this workshop, you'll interact with different test categories to full
 - [Smart Test Documentation](https://app.launchableinc.com/)
 
 Explore the documentation for comprehensive insights and advanced features. This workshop aims to revolutionize your testing strategy with AI-driven precision and automated efficiency. Enjoy the process!
-```
-
