@@ -17,8 +17,8 @@ After entering the required information, click **Crete repository from template*
 Let's clone a forked repository
 
 ```sh
-git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME smarttest-workshop
-cd smarttest-workshop
+git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME smarttests-workshop
+cd smarttests-workshop
 ```
 
 ## Make Smart Test API token available to GitHub Actions
