@@ -19,6 +19,7 @@ Let's clone a forked repository
 ```sh
 git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME smarttests-workshop
 cd smarttests-workshop
+git switch -c launchable-test
 ```
 
 ## Make Smart Test API token available to GitHub Actions
