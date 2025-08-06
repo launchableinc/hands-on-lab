@@ -51,6 +51,7 @@ Update your `.github/workflows/pre-merge.yml` as follows:
 ```
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 - uses: actions/setup-python@v5
   with:
@@ -58,6 +59,7 @@ Update your `.github/workflows/pre-merge.yml` as follows:
 - name: Install Launchable command
   run: pip install --user --upgrade launchable~=1.0
 ```
+
 </details>
 <br>
 
@@ -92,6 +94,7 @@ Update `.github/workflows/pre-merge.yml` by adding:
 
 <details>
 <summary>Raw texts for copying</summary>
+
 ```
 env:
   LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
@@ -101,6 +104,7 @@ env:
 - name: Launchable verify
   run: launchable verify
 ```
+
 </details>
 <br>
 
@@ -136,10 +140,12 @@ steps:
 
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 with:
   fetch-depth: 0
 ```
+
 </details>
 <br>
 
@@ -199,12 +205,14 @@ Update `.github/workflows/pre-merge.yml` as follows:
 ```
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 - name: Launchable subset
   run: |
     launchable record session --build ${{ github.run_id }} > session.txt
     launchable subset --session $(cat session.txt) --observation maven src/test/java > launchable-subset.txt
 ```
+
 </details>
 <br>
 
@@ -235,9 +243,11 @@ Next, pass this subset to the test runner.
 ```
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 run: mvn test -Dsurefire.includesFile=launchable-subset.txt
 ```
+
 </details>
 <br>
 
@@ -256,11 +266,13 @@ Update `.github/workflows/pre-merge.yml` as follows:
 ```
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 - name: Launchable record tests
   if: always()
   run: launchable record tests --session $(cat session.txt) maven ./**/target/surefire-reports
 ```
+
 </details>
 <br>
 
