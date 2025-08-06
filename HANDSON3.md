@@ -182,6 +182,12 @@ run: pip install --user --upgrade launchable~=1.0
 </details>
 <br>
 
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'start collecting build data'
+git push
+```
+
 If the setup is successful, you will see logs similar to the following:
 
 ```
