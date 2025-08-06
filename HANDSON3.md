@@ -55,7 +55,7 @@ Update your `.github/workflows/pre-merge.yml` as follows:
 ```
 - uses: actions/setup-python@v5
   with:
-  python-version: '3.13'
+    python-version: '3.13'
 - name: Install Launchable command
   run: pip install --user --upgrade launchable~=1.0
 ```
