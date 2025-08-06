@@ -108,6 +108,14 @@ env:
 </details>
 <br>
 
+Let's push these changes and check the result.
+
+```sh
+git add .github/workflows/pre-merge.yml
+git commit -m 'first set up'
+git push
+```
+
 You will see verification logs on GitHub Actions if the setup is successful:
 
 ```
@@ -117,7 +125,7 @@ Proxy: None
 Platform: 'Linux-6.8.0-1017-azure-x86_64-with-glibc2.39'
 Python version: '3.12.8'
 Java command: 'java'
-launchable version: '1.97.0'
+launchable version: '1.110.0'
 Your CLI configuration is successfully verified 🎉
 ```
 
