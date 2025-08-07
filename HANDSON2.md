@@ -8,10 +8,9 @@ For the purpose of this workshop, let's make a small change in your software to 
 Don't worry, the commit you'll create will stay in your computer.
 
 ```
-git switch -c test-launchable
+git switch --create test-launchable
 vim <UPDATE YOUR APP or TEST CODE>
-git add <UPDATE YOUR APP or TEST CODE>
-git commit -m 'test launchable'
+git commit --all --message 'test launchable'
 ```
 
 
@@ -21,7 +20,7 @@ In order to select the right tests for your software, Smart Test needs to know w
 
 A build is a specific version of your software that you are testing. It can consist of multiple Git repositories, and in each repository, it points to a specific commit. A build is identified by its name.
 
->  **build** represents the software. Each time you send test results to Smart Test, you record them against a specific build so that Smart Test knows that you ran X tests against Y software with Z results.
+> **build** represents the software. Each time you send test results to Smart Test, you record them against a specific build so that Smart Test knows that you ran X tests against Y software with Z results.
 
 refs: [Documentation](https://www.launchableinc.com/docs/concepts/build/)
 
