@@ -18,7 +18,7 @@ pip install --upgrade launchable~=1.0
 Let’s check that it’s installed correctly:
 
 ```
-$ launchable --help
+launchable --help
 ```
 
 >[!TIP]
@@ -56,7 +56,7 @@ export LAUNCHABLE_TOKEN=<API TOKEN>
 `launchable verify` command is a convenient way to make sure all the prerequisites are met and the API key is valid:
 
 ```
-$ launchable verify
+launchable verify
 ```
 
 If you see a message like this, you’re all set:

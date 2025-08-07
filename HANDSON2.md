@@ -30,7 +30,7 @@ Therefore, before you run your tests, you record a build using `launchable recor
 Move to the locally checked out copy of your software, check out its main branch,
 and run the following command to record a build:
 ```
-$ launchable record build --name mychange1
+launchable record build --name mychange1
 ```
 If you see a message like this, it was successful:
 
@@ -52,7 +52,7 @@ By default, this command looks at the current directory.
 If you have multiple repositories, you'll use the `--source` option to direct the command to the right repositories.
 
 ```
-$ launchable record build --name mychange1 --source app=path/to/repo1 --source test=path/to/repo2 ...
+launchable record build --name mychange1 --source app=path/to/repo1 --source test=path/to/repo2 ...
 ```
 
 In the above example, you are telling Smart Test that the build consists of two repositories: `app` and `test`.
@@ -71,7 +71,7 @@ Now, you declare the start of a new test session; A test session is an act of ru
  refs: [Documentation](https://www.launchableinc.com/docs/concepts/test-session/)
 
  ```
- $ launchable record session --build mychange1 > session.txt
+ launchable record session --build mychange1 > session.txt
  ```
 
 When you record a new test session, Smart Test will return a session ID, which is stored in `session.txt` file.
@@ -79,7 +79,7 @@ When you record a new test session, Smart Test will return a session ID, which i
 Now, let's have Smart Test select the best set of tests to run for this test session.
 
  ```
- $ launchable subset --session $(cat session.txt) --get-tests-from-guess file > subset.txt
+ launchable subset --session $(cat session.txt) --get-tests-from-guess file > subset.txt
  $ cat subset.txt
 ```
 
