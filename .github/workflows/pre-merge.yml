@@ -5,6 +5,8 @@ on:
   workflow_dispatch:
 
 env:
+  LAUNCHABLE_ORGANIZATION: "launchable-demo"
+  LAUNCHABLE_WORKSPACE: "hands-on-lab"
   LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
 
 jobs:
