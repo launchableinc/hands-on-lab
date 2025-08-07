@@ -51,6 +51,6 @@ Launchable Smart Tests enhances the efficiency of this pyramid by automating pre
 
 ## Reference Materials
 
-- [Smart Test Documentation](https://app.launchableinc.com/)
+- [Smart Test Documentation](https://www.launchableinc.com/docs/)
 
 Explore the documentation for comprehensive insights and advanced features. This workshop aims to revolutionize your testing strategy with AI-driven precision and automated efficiency. Enjoy the process!
