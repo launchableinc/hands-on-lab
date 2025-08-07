@@ -213,8 +213,8 @@ Update `.github/workflows/pre-merge.yml` as follows:
         run: mvn compile
 +     - name: Launchable subset
 +       run: |
-+         launchable record session --build ${{ github.run_id }} > session.txt
-+         launchable subset --session $(cat session.txt) --observation maven src/test/java > launchable-subset.txt
++         launchable record session --build ${{ github.run_id }} --observation > session.txt
++         launchable subset --session $(cat session.txt) --target 50%  maven src/test/java > launchable-subset.txt
       - name: Test
         run: mvn test
 ```
