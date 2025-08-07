@@ -3,13 +3,13 @@
 In this section, you will use a toy Java project in this repository and its delivery pipeline based on GitHub Action as an example, to gain better understanding of how to use Smart Test in your CI pipeline.
 
 # Fork this repository
-Click the **Use this template** button to create your own copy of this repository, so that you can make changes in it.
+Click the **Fork** button to create your own copy of this repository, so that you can make changes in it.
 
-<img src="https://user-images.githubusercontent.com/536667/191436235-e1347cf9-dcb2-41e8-89b6-df3bf2accf5d.png" width="50%">
+<img src="https://github.com/user-attachments/assets/03757336-0b5f-48fb-847b-5e8b6924ce10" width="50%">
 
-After entering the required information, click **Crete repository from template**.
+After entering the required information, click **Crete fork** button.
 
-<img src="https://user-images.githubusercontent.com/536667/191436235-e1347cf9-dcb2-41e8-89b6-df3bf2accf5d.png" width="50%">
+<img src="https://github.com/user-attachments/assets/bcab29b8-d217-4bd2-b4a6-42780e99b4c3" width="50%">
 
 
 ## Clone the forked repository to your local computer
