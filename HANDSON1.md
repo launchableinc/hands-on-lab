@@ -1,13 +1,13 @@
 # Lab 1. Environment setup
 
-First, locally clone the repositories you want to try Smart Test with.
+First, locally clone the repositories you want to try Smart Tests with.
 If your test and production code reside in two different repositories, clone both of them.
 
 If your production code are split among multiple repositories, we recommend you clone a couple of major ones, just to keep this workshop manageable.
 
 ## Install Launchable command
 
-You interact with Smart Test using a command line tool called `launchable`.
+You interact with Smart Tests using a command line tool called `launchable`.
 
 You can install it with pip:
 

@@ -17,11 +17,11 @@ git commit --all --message 'test launchable'
 
 ## Capture software under test
 
-In order to select the right tests for your software, Smart Test needs to know what software you are testing. We call this a **build**.
+In order to select the right tests for your software, Smart Tests need to know what software you are testing. We call this a **build**.
 
 A build is a specific version of your software that you are testing. It can consist of multiple Git repositories, and in each repository, it points to a specific commit. A build is identified by its name.
 
-> **build** represents the software. Each time you send test results to Smart Test, you record them against a specific build so that Smart Test knows that you ran X tests against Y software with Z results.
+> **build** represents the software. Each time you send test results to Smart Test, you record them against a specific build so that Smart Tests know that you ran X tests against Y software with Z results.
 
 refs: [Documentation](https://www.launchableinc.com/docs/concepts/build/)
 
@@ -45,7 +45,7 @@ Launchable recorded build hands-on to workspace <YOUR ORG/WORKSPACE> with commit
 Visit https://app.launchableinc.com/organizations/<ORG>/workspaces/<WORKSPACE>/data/builds/<BUILD ID> to view this build and its test sessions
 ```
 
-What just happened? Smart Test recorded the current HEAD of your local repository as the build,
+What just happened? Smart Tests recorded the current HEAD of your local repository as the build,
 using the name given.
 
 By default, this command looks at the current directory.
@@ -55,15 +55,15 @@ If you have multiple repositories, you'll use the `--source` option to direct th
 launchable record build --name mychange1 --source app=path/to/repo1 --source test=path/to/repo2 ...
 ```
 
-In the above example, you are telling Smart Test that the build consists of two repositories: `app` and `test`.
+In the above example, you are telling Smart Tests that the build consists of two repositories: `app` and `test`.
 
 
 
-Since this was the first time you recorded a build, Smart Test needed to transfer relatively
+Since this was the first time you recorded a build, Smart Tests needed to transfer relatively
 large amount of data to its server, including recent commit history, file contents, etc. It
 also has to do a lot of number crunching to prepare for the predictive test selection.
 
-But subsequent calls to `launchable record build` will be much faster, because Smart Test will only transfer the new commits that you have added since the last build.
+But subsequent calls to `launchable record build` will be much faster, because Smart Tests will only transfer the new commits that you have added since the last build.
 
 ## Request and inspect a subset to test
 Now, you declare the start of a new test session; A test session is an act of running tests against a specific build. Test selection and recording of test results are done against a test session.
@@ -74,20 +74,20 @@ Now, you declare the start of a new test session; A test session is an act of ru
  launchable record session --build mychange1 > session.txt
  ```
 
-When you record a new test session, Smart Test will return a session ID, which is stored in `session.txt` file.
+When you record a new test session, Smart Tests will return a session ID, which is stored in `session.txt` file.
 
-Now, let's have Smart Test select the best set of tests to run for this test session.
+Now, let's have Smart Tests select the best set of tests to run for this test session.
 
  ```
  launchable subset --session $(cat session.txt) --get-tests-from-guess file > subset.txt
  $ cat subset.txt
 ```
 
-Since you haven't run any tests yet, Smart Test will select files in your repository
+Since you haven't run any tests yet, Smart Tests will select files in your repository
 that looks like tests, and order them in the order it thinks is most relevant to
 the change you just made:
 
-As you run and record test results, Smart Test will learn from the results and improve its selection.
+As you run and record test results, Smart Tests will learn from the results and improve its selection.
 Among other things, you will be able to specify the size of the subset you'd like to obtain, for example
 "give me 10 minutes worth of tests to run".
 

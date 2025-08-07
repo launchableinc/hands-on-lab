@@ -19,7 +19,7 @@ Understanding the Testing Pyramid is crucial for structuring your test suite eff
 
 ### Value of Launchable Smart Tests Automation
 
-Launchable Smart Tests enhances the efficiency of this pyramid by automating predictive test selection. Through its intelligent analysis, Smart Test selects the most relevant set of tests to run, reducing redundancy and maximizing resource efficiency. This automation ensures rapid feedback loops, minimizes the risk of regressions, and supports a robust Continuous Integration (CI) approach.
+Launchable Smart Tests enhance the efficiency of this pyramid by automating predictive test selection. Through its intelligent analysis, Smart Tests selects the most relevant set of tests to run, reducing redundancy and maximizing resource efficiency. This automation ensures rapid feedback loops, minimizes the risk of regressions, and supports a robust Continuous Integration (CI) approach.
 
 ## Goals
 
@@ -45,12 +45,12 @@ Launchable Smart Tests enhances the efficiency of this pyramid by automating pre
 - **Step 2: Try Predictive Test Selection**
   - Experiment with PTS by making code changes and observing test selection.
   - [Lab 2. Try predictive test selection](HANDSON2.md)
-- **Step 3: Incorporate Smart Test into Your CI Pipeline**
+- **Step 3: Incorporate Smart Tests into Your CI Pipeline**
   - Integrate Smart Tests into your CI pipeline for automated, efficient testing cycles.
-  - [Lab 3. Incorporate Smart Test into your CI pipeline](HANDSON3.md)
+  - [Lab 3. Incorporate Smart Tests into your CI pipeline](HANDSON3.md)
 
 ## Reference Materials
 
-- [Smart Test Documentation](https://www.launchableinc.com/docs/)
+- [Smart Tests Documentation](https://www.launchableinc.com/docs/)
 
 Explore the documentation for comprehensive insights and advanced features. This workshop aims to revolutionize your testing strategy with AI-driven precision and automated efficiency. Enjoy the process!

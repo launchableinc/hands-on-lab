@@ -1,6 +1,6 @@
-# Lab 3. Incorporate Smart Test into your CI pipeline
+# Lab 3. Incorporate Smart Tests into your CI pipeline
 
-In this section, you will use a toy Java project in this repository and its delivery pipeline based on GitHub Action as an example, to gain better understanding of how to use Smart Test in your CI pipeline.
+In this section, you will use a toy Java project in this repository and its delivery pipeline based on GitHub Action as an example, to gain better understanding of how to use Smart Tests in your CI pipeline.
 
 # Fork this repository
 Click the **Fork** button to create your own copy of this repository, so that you can make changes in it.
