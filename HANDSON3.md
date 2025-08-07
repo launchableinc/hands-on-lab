@@ -84,15 +84,15 @@ Let's push these changes and check the result.
 
 ```sh
 git add .github/workflows/pre-merge.yml
-git commit -m 'first set up'
+git commit -m 'initial set up'
 git push
 ```
 
-You will see verification logs on GitHub Actions if the setup is successful:
+And, create a Pull Request from your repository to the original (launchableinc/hands-on-lab) repository. After running GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
 
 ```
-Organization: '<YOUR ORGANIZATION NAME>'
-Workspace: '<YOUR WORKSPACE NAME>'
+Organization: launchable-demo
+Workspace: hands-on-lab
 Proxy: None
 Platform: 'Linux-6.8.0-1017-azure-x86_64-with-glibc2.39'
 Python version: '3.12.8'
@@ -155,7 +155,7 @@ run: pip install --user --upgrade launchable~=1.0
 
 ```
 git add .github/workflows/pre-merge.yml
-git commit -m 'start collecting build data'
+git commit -m 'start sending build data'
 git push
 ```
 
@@ -184,8 +184,9 @@ Update `.github/workflows/pre-merge.yml` as follows:
         run: mvn compile
 +     - name: Launchable subset
 +       run: |
-+         launchable record session --build ${{ github.run_id }} --observation > session.txt
++         launchable record session --build ${{ github.run_id }} --observation --test-suite unit-test > session.txt
 +         launchable subset --session $(cat session.txt) --target 50%  maven src/test/java > launchable-subset.txt
++         cat launchable-subset.txt
       - name: Test
         run: mvn test
 ```
@@ -195,8 +196,9 @@ Update `.github/workflows/pre-merge.yml` as follows:
 ```
 - name: Launchable subset
   run: |
-    launchable record session --build ${{ github.run_id }} > session.txt
-    launchable subset --session $(cat session.txt) --observation maven src/test/java > launchable-subset.txt
+    launchable record session --build ${{ github.run_id }} --observation --test-suite unit-test > session.txt
+    launchable subset --session $(cat session.txt) --target 50% maven src/test/java > launchable-subset.txt
+    cat launchable-subet.txt
 ```
 
 </details>
