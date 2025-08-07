@@ -8,6 +8,7 @@ For the purpose of this workshop, let's make a small change in your software to 
 Don't worry, the commit you'll create will stay in your computer.
 
 ```
+cd your/repository
 git switch --create test-launchable
 vim <UPDATE YOUR APP or TEST CODE>
 git commit --all --message 'test launchable'
