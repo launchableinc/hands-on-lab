@@ -49,14 +49,6 @@ Launchable Smart Tests enhances the efficiency of this pyramid by automating pre
   - Integrate Smart Tests into your CI pipeline for automated, efficient testing cycles.
   - [Lab 3. Incorporate Smart Test into your CI pipeline](HANDSON3.md)
 
-## Exploring Test Categories
-
-Throughout this workshop, you'll interact with different test categories to fully leverage Predictive Test Selection:
-
-- **UI Tests:** Ensure consistent and functional UIs across changes.
-- **Data Pipelines Tests:** Validate data processing accuracy and performance.
-- **Integration Tests:** Verify seamless interaction between application components.
-
 ## Reference Materials
 
 - [Smart Test Documentation](https://app.launchableinc.com/)
