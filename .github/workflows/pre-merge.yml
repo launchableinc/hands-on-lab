@@ -4,6 +4,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  LAUNCHABLE_ORGANIZATION: "launchable-demo"
+  LAUNCHABLE_WORKSPACE: "hands-on-lab"
+
 jobs:
   PreMergeTest:
     runs-on: ubuntu-latest
