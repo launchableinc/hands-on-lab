@@ -19,17 +19,8 @@ Let's clone a forked repository
 ```sh
 git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME smarttests-workshop
 cd smarttests-workshop
-git switch -c launchable-test
+git switch -c workshop
 ```
-
-## Make Smart Test API token available to GitHub Actions
-In previous labs, you were passing `LAUNCHABLE_TOKEN` as an environment variable to the `launchable` command. In order to do this in the CI pipeline, this token must be configured with th CI system as a secret.
-
-Open the settings page of the GitHub repository that you created earlier and set the API key as a repository secret `LAUNCHABLE_TOKEN` under **Secrets and variables > Actions**.
-
-![Screenshot from 2025-05-27 08-53-29](https://github.com/user-attachments/assets/956bbc03-599c-4551-8348-51497d0750d6)
-
-![Screenshot from 2025-05-27 09-01-30](https://github.com/user-attachments/assets/924881cf-c69a-464e-97da-92ba4e43cb0d)
 
 ## Install the Launchable command in CI pipeline
 First step of the integration is to make the `launchable` command available in the CI pipeline.
@@ -64,26 +55,11 @@ Update your `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
-Next, Let's expose the API token you set as an environment variable.
-
-To help you make sure that you have everything set up correctly, we have the `launchable verify` command, so we'll add it to the pipeline as well.
+Next, to help you make sure that you have everything set up correctly, we have the `launchable verify` command, so we'll add it to the pipeline as well.
 
 
 Update `.github/workflows/pre-merge.yml` by adding:
 ```diff
-   pull_request:
-   workflow_dispatch:
-
-+env:
-+  LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
-+
- jobs:
-   build:
-     runs-on: ubuntu-latest
-
-...
-
-          python-version: '3.10'
        - name: Install Launchable command
          run: pip install --user --upgrade launchable~=1.0
 +      - name: Launchable verify
@@ -95,11 +71,6 @@ Update `.github/workflows/pre-merge.yml` by adding:
 
 <details>
 <summary>Raw texts for copying</summary>
-
-```
-env:
-  LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
-```
 
 ```
 - name: Launchable verify
