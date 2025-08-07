@@ -3,13 +3,13 @@
 In this section, you will use a toy Java project in this repository and its delivery pipeline based on GitHub Action as an example, to gain better understanding of how to use Smart Test in your CI pipeline.
 
 # Fork this repository
-Click the **Use this template** button to create your own copy of this repository, so that you can make changes in it.
+Click the **Fork** button to create your own copy of this repository, so that you can make changes in it.
 
-<img src="https://user-images.githubusercontent.com/536667/191436235-e1347cf9-dcb2-41e8-89b6-df3bf2accf5d.png" width="50%">
+<img src="https://github.com/user-attachments/assets/03757336-0b5f-48fb-847b-5e8b6924ce10" width="50%">
 
-After entering the required information, click **Crete repository from template**.
+After entering the required information, click **Crete fork** button.
 
-<img src="https://user-images.githubusercontent.com/536667/191436235-e1347cf9-dcb2-41e8-89b6-df3bf2accf5d.png" width="50%">
+<img src="https://github.com/user-attachments/assets/bcab29b8-d217-4bd2-b4a6-42780e99b4c3" width="50%">
 
 
 ## Clone the forked repository to your local computer
@@ -19,20 +19,11 @@ Let's clone a forked repository
 ```sh
 git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME smarttests-workshop
 cd smarttests-workshop
-git switch -c launchable-test
+git switch -c workshop
 ```
 
-## Make Smart Test API token available to GitHub Actions
-In previous labs, you were passing `LAUNCHABLE_TOKEN` as an environment variable to the `launchable` command. In order to do this in the CI pipeline, this token must be configured with th CI system as a secret.
-
-Open the settings page of the GitHub repository that you created earlier and set the API key as a repository secret `LAUNCHABLE_TOKEN` under **Secrets and variables > Actions**.
-
-![Screenshot from 2025-05-27 08-53-29](https://github.com/user-attachments/assets/956bbc03-599c-4551-8348-51497d0750d6)
-
-![Screenshot from 2025-05-27 09-01-30](https://github.com/user-attachments/assets/924881cf-c69a-464e-97da-92ba4e43cb0d)
-
 ## Install the Launchable command in CI pipeline
-First step of the integration is to make the `launchable` command available in the CI pipeline. 
+First step of the integration is to make the `launchable` command available in the CI pipeline.
 
 Update your `.github/workflows/pre-merge.yml` as follows:
 ```diff
@@ -64,26 +55,11 @@ Update your `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
-Next, Let's expose the API token you set as an environment variable.
-
-To help you make sure that you have everything set up correctly, we have the `launchable verify` command, so we'll add it to the pipeline as well.
+Next, to help you make sure that you have everything set up correctly, we have the `launchable verify` command, so we'll add it to the pipeline as well.
 
 
 Update `.github/workflows/pre-merge.yml` by adding:
 ```diff
-   pull_request:
-   workflow_dispatch:
-
-+env:
-+  LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
-+
- jobs:
-   build:
-     runs-on: ubuntu-latest
-
-...
-
-          python-version: '3.10'
        - name: Install Launchable command
          run: pip install --user --upgrade launchable~=1.0
 +      - name: Launchable verify
@@ -97,11 +73,6 @@ Update `.github/workflows/pre-merge.yml` by adding:
 <summary>Raw texts for copying</summary>
 
 ```
-env:
-  LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
-```
-
-```
 - name: Launchable verify
   run: launchable verify
 ```
@@ -113,15 +84,15 @@ Let's push these changes and check the result.
 
 ```sh
 git add .github/workflows/pre-merge.yml
-git commit -m 'first set up'
+git commit -m 'initial set up'
 git push
 ```
 
-You will see verification logs on GitHub Actions if the setup is successful:
+And, create a Pull Request from your repository to the original (launchableinc/hands-on-lab) repository. After running GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
 
 ```
-Organization: '<YOUR ORGANIZATION NAME>'
-Workspace: '<YOUR WORKSPACE NAME>'
+Organization: launchable-demo
+Workspace: hands-on-lab
 Proxy: None
 Platform: 'Linux-6.8.0-1017-azure-x86_64-with-glibc2.39'
 Python version: '3.12.8'
@@ -184,7 +155,7 @@ run: pip install --user --upgrade launchable~=1.0
 
 ```
 git add .github/workflows/pre-merge.yml
-git commit -m 'start collecting build data'
+git commit -m 'start sending build data'
 git push
 ```
 
@@ -213,8 +184,9 @@ Update `.github/workflows/pre-merge.yml` as follows:
         run: mvn compile
 +     - name: Launchable subset
 +       run: |
-+         launchable record session --build ${{ github.run_id }} > session.txt
-+         launchable subset --session $(cat session.txt) --observation maven src/test/java > launchable-subset.txt
++         launchable record session --build ${{ github.run_id }} --observation --test-suite unit-test > session.txt
++         launchable subset --session $(cat session.txt) --target 50%  maven src/test/java > launchable-subset.txt
++         cat launchable-subset.txt
       - name: Test
         run: mvn test
 ```
@@ -224,12 +196,19 @@ Update `.github/workflows/pre-merge.yml` as follows:
 ```
 - name: Launchable subset
   run: |
-    launchable record session --build ${{ github.run_id }} > session.txt
-    launchable subset --session $(cat session.txt) --observation maven src/test/java > launchable-subset.txt
+    launchable record session --build ${{ github.run_id }} --observation --test-suite unit-test > session.txt
+    launchable subset --session $(cat session.txt) --target 50% maven src/test/java > launchable-subset.txt
+    cat launchable-subet.txt
 ```
 
 </details>
 <br>
+
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'start subsetting'
+git push
+```
 
 When you, you should see something like this. Details might vary:
 
@@ -266,6 +245,12 @@ run: mvn test -Dsurefire.includesFile=launchable-subset.txt
 </details>
 <br>
 
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'use the subset result'
+git push
+```
+
 ## Record test results
 After tests are run, you need to report the test results to Launchable. This is done by the **launchable record tests** command.
 
@@ -291,6 +276,12 @@ Update `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'report test results'
+git push
+```
+
 ## Check the results
 If everything is set up correctly, you can view the test results on Launchable as shown below: (A URL to this page is in the GitHub Actions log)
 
@@ -313,3 +304,13 @@ evaluate its performance & roll out. In this workshop, we can skip this step and
       - name: Test
         run: mvn test
 ```
+
+Let's apply this change and check the result.
+
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'disable observation mode'
+git push
+```
+
+
