@@ -204,6 +204,12 @@ Update `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'start subsetting'
+git push
+```
+
 When you, you should see something like this. Details might vary:
 
 ```
@@ -239,6 +245,12 @@ run: mvn test -Dsurefire.includesFile=launchable-subset.txt
 </details>
 <br>
 
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'use the subset result'
+git push
+```
+
 ## Record test results
 After tests are run, you need to report the test results to Launchable. This is done by the **launchable record tests** command.
 
@@ -264,6 +276,12 @@ Update `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'report test results'
+git push
+```
+
 ## Check the results
 If everything is set up correctly, you can view the test results on Launchable as shown below: (A URL to this page is in the GitHub Actions log)
 
@@ -286,3 +304,13 @@ evaluate its performance & roll out. In this workshop, we can skip this step and
       - name: Test
         run: mvn test
 ```
+
+Let's apply this change and check the result.
+
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'disable observation mode'
+git push
+```
+
+
