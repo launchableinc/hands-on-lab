@@ -75,7 +75,7 @@ Your CLI configuration is successfully verified 🎉
 ___
 
 If you see the help message, the installation was successful.
-You can now move on to the next step (HANDSON2.md).
+You can now move on to [the next step](HANDSON2.md).
 
 
 

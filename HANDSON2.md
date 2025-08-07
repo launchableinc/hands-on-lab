@@ -93,3 +93,5 @@ Among other things, you will be able to specify the size of the subset you'd lik
 
 > [!TIP]
 > Try making different changes in your code and see how the selected tests change.
+
+You can now move on to [the next step](HANDSON3.md).
