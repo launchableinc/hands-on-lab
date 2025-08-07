@@ -32,7 +32,7 @@ Open the settings page of the GitHub repository that you created earlier and set
 ![Screenshot from 2025-05-27 09-01-30](https://github.com/user-attachments/assets/924881cf-c69a-464e-97da-92ba4e43cb0d)
 
 ## Install the Launchable command in CI pipeline
-First step of the integration is to make the `launchable` command available in the CI pipeline. 
+First step of the integration is to make the `launchable` command available in the CI pipeline.
 
 Update your `.github/workflows/pre-merge.yml` as follows:
 ```diff
