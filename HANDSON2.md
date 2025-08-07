@@ -8,6 +8,7 @@ For the purpose of this workshop, let's make a small change in your software to 
 Don't worry, the commit you'll create will stay in your computer.
 
 ```
+git switch -c test-launchable
 vim <UPDATE YOUR APP or TEST CODE>
 git add <UPDATE YOUR APP or TEST CODE>
 git commit -m 'test launchable'
@@ -78,7 +79,7 @@ When you record a new test session, Smart Test will return a session ID, which i
 Now, let's have Smart Test select the best set of tests to run for this test session.
 
  ```
- $ launchable subset --session $(cat session.txt) file > subset.txt
+ $ launchable subset --session $(cat session.txt) --get-tests-from-guess-file > subset.txt
  $ cat subset.txt
 ```
 

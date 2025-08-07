@@ -17,8 +17,9 @@ After entering the required information, click **Crete repository from template*
 Let's clone a forked repository
 
 ```sh
-git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME smarttest-workshop
-cd smarttest-workshop
+git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME smarttests-workshop
+cd smarttests-workshop
+git switch -c launchable-test
 ```
 
 ## Make Smart Test API token available to GitHub Actions
@@ -51,13 +52,15 @@ Update your `.github/workflows/pre-merge.yml` as follows:
 ```
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 - uses: actions/setup-python@v5
   with:
-  python-version: '3.13'
+    python-version: '3.13'
 - name: Install Launchable command
   run: pip install --user --upgrade launchable~=1.0
 ```
+
 </details>
 <br>
 
@@ -92,6 +95,7 @@ Update `.github/workflows/pre-merge.yml` by adding:
 
 <details>
 <summary>Raw texts for copying</summary>
+
 ```
 env:
   LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
@@ -101,8 +105,17 @@ env:
 - name: Launchable verify
   run: launchable verify
 ```
+
 </details>
 <br>
+
+Let's push these changes and check the result.
+
+```sh
+git add .github/workflows/pre-merge.yml
+git commit -m 'first set up'
+git push
+```
 
 You will see verification logs on GitHub Actions if the setup is successful:
 
@@ -113,7 +126,7 @@ Proxy: None
 Platform: 'Linux-6.8.0-1017-azure-x86_64-with-glibc2.39'
 Python version: '3.12.8'
 Java command: 'java'
-launchable version: '1.97.0'
+launchable version: '1.110.0'
 Your CLI configuration is successfully verified 🎉
 ```
 
@@ -136,10 +149,12 @@ steps:
 
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 with:
   fetch-depth: 0
 ```
+
 </details>
 <br>
 
@@ -166,6 +181,12 @@ run: pip install --user --upgrade launchable~=1.0
 
 </details>
 <br>
+
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'start collecting build data'
+git push
+```
 
 If the setup is successful, you will see logs similar to the following:
 
@@ -199,12 +220,14 @@ Update `.github/workflows/pre-merge.yml` as follows:
 ```
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 - name: Launchable subset
   run: |
     launchable record session --build ${{ github.run_id }} > session.txt
     launchable subset --session $(cat session.txt) --observation maven src/test/java > launchable-subset.txt
 ```
+
 </details>
 <br>
 
@@ -235,9 +258,11 @@ Next, pass this subset to the test runner.
 ```
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 run: mvn test -Dsurefire.includesFile=launchable-subset.txt
 ```
+
 </details>
 <br>
 
@@ -256,11 +281,13 @@ Update `.github/workflows/pre-merge.yml` as follows:
 ```
 <details>
 <summary>Raw text for copying</summary>
+
 ```
 - name: Launchable record tests
   if: always()
   run: launchable record tests --session $(cat session.txt) maven ./**/target/surefire-reports
 ```
+
 </details>
 <br>
 
