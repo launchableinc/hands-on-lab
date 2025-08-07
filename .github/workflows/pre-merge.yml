@@ -31,7 +31,7 @@ jobs:
         run: launchable record build --name ${{ github.run_id }}
       - name: Launchable subset
         run: |
-          launchable record session --build ${{ github.run_id }} --observation --test-suite unit-test > session.txt
+          launchable record session --build ${{ github.run_id }} --test-suite unit-test > session.txt
           launchable --log-level debug subset --session $(cat session.txt) maven src/test/java > launchable-subset.txt
           cat launchable-subset.txt
       - name: Compile
