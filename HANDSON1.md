@@ -12,7 +12,7 @@ You interact with Smart Test using a command line tool called `launchable`.
 You can install it with pip:
 
 ```
-pip install --upgrade launchable~=1.0
+pip3 install --upgrade launchable~=1.0
 ```
 
 Let’s check that it’s installed correctly:
