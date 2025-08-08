@@ -1,60 +1,213 @@
-# Hands-on 3. Run test with the Predictive Test Selection
+# Lab 3. Incorporate Smart Tests into your CI pipeline
 
-In this section, you will introduce Predictive Test Selection (PTS) and verify that Launchable returns test relevant to your changes.
+In this section, you will use a toy Java project in this repository and its delivery pipeline based on GitHub Action as an example, to gain better understanding of how to use Smart Tests in your CI pipeline.
 
-Then, edit `.github/workflows/pre-merge.md` and introduce the **subset** command.
+# Fork this repository
+Click the **Fork** button to create your own copy of this repository, so that you can make changes in it.
 
-You will:
+<img src="https://github.com/user-attachments/assets/03757336-0b5f-48fb-847b-5e8b6924ce10" width="50%">
 
-1. Set up `launchable record subset` (Predictive Test Selection) with the observation option
-1. Disable observation mode
-1. Change subset target value
-1. Add a new test case and check the Predictive Test Selection works correctly
+After entering the required information, click **Crete fork** button.
 
-Before you begin, create a new branch named `PR2`.
+<img src="https://github.com/user-attachments/assets/bcab29b8-d217-4bd2-b4a6-42780e99b4c3" width="50%">
+
+
+## Clone the forked repository to your local computer
+
+Let's clone a forked repository
+
+```sh
+git clone  git@github.com/YOUR-USERNAME/REPOSITORY-NAME.git smarttests-workshop
+cd smarttests-workshop
+git switch -c workshop
+```
+
+## Install the Launchable command in CI pipeline
+First step of the integration is to make the `launchable` command available in the CI pipeline.
+
+Update your `.github/workflows/pre-merge.yml` as follows:
+```diff
+        with:
+          java-version: 21
+          distribution: "adopt"
++     - uses: actions/setup-python@v5
++       with:
++         python-version: '3.13'
++     - name: Install Launchable command
++       run: pip install --user --upgrade launchable~=1.0
+      - name: Compile
+        run: mvn compile
+```
+<details>
+<summary>Raw text for copying</summary>
 
 ```
-$ git switch main
-$ git pull origin main
-$ git switch -c PR2
-$ git commit --allow-empty -m "introduce subset command"
-$ git push origin PR2
+- uses: actions/setup-python@v5
+  with:
+    python-version: '3.13'
+- name: Install Launchable command
+  run: pip install --user --upgrade launchable~=1.0
 ```
- Then, create a pull request from `PR2` branch to `main` branch.
 
- ## Set up "launchable subset" command
+</details>
+<br>
+
+Next, to help you make sure that you have everything set up correctly, we have the `launchable verify` command, so we'll add it to the pipeline as well.
 
 
-Let's setup the **launchable subset** command with the [observation mode](https://docs.launchableinc.com/features/predictive-test-selection/observing-subset-behavior) option.
+Update `.github/workflows/pre-merge.yml` by adding:
+```diff
+       - name: Install Launchable command
+         run: pip install --user --upgrade launchable~=1.0
++      - name: Launchable verify
++        run: launchable verify
+       - name: Compile
+         run: mvn compile
+       - name: Test
+```
+
+<details>
+<summary>Raw texts for copying</summary>
+
+```
+- name: Launchable verify
+  run: launchable verify
+```
+
+</details>
+<br>
+
+Let's push these changes and check the result.
+
+```sh
+git add .github/workflows/pre-merge.yml
+git commit -m 'initial set up'
+git push origin workshop
+```
+
+And, create a Pull Request from your repository to the original (launchableinc/hands-on-lab) repository. After running GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
+
+```
+Organization: launchable-demo
+Workspace: hands-on-lab
+Proxy: None
+Platform: 'Linux-6.8.0-1017-azure-x86_64-with-glibc2.39'
+Python version: '3.12.8'
+Java command: 'java'
+launchable version: '1.110.0'
+Your CLI configuration is successfully verified 🎉
+```
+
+## Record the build information
+
+Now, let's record the build information. We've already looked at what this does in Lab 2.
+
+Launchable uses commit history to train models, so you need to use a full clone.
 
 Update `.github/workflows/pre-merge.yml` as follows:
 ```diff
-      - name: Launchable verify
-        run: launchable verify
-      - name: launchable record build
-        run: launchable record build --name ${{ github.run_id }}
-+     - name: launchable subset
-+       run: |
-+         launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
-+         cat launchable-subset.txt
-      - name: Test
-        run: mvn test
+steps:
+       - uses: actions/checkout@v5
++        with:
++          fetch-depth: 0
+       - uses: actions/setup-java@v4
+         with:
+           java-version: 11
 ```
 
 <details>
 <summary>Raw text for copying</summary>
 
 ```
-- name: launchable subset
-  run: |
-    launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
-    cat launchable-subset.txt
+with:
+  fetch-depth: 0
 ```
 
 </details>
 <br>
 
-You can view the subset result log in the GitHub Actions log. For example (The ratio between the subset and the rest may vary.):
+Next, execute the **launchable record build** command.
+
+```diff
+run: pip install --user --upgrade launchable~=1.0
+       - name: Launchable verify
+         run: launchable verify
++      - name: Launchable record build
++        run: launchable record build --name ${{ github.run_id }}
+       - name: Compile
+         run: mvn compile
+   worker-node-1:
+```
+
+<details>
+<summary>Raw text for copying</summary>
+
+```
+- name: Launchable record build
+  run: launchable record build --name ${{ github.run_id }}
+```
+
+</details>
+<br>
+
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'start sending build data'
+git push origin workshop
+```
+
+If the setup is successful, you will see logs similar to the following:
+
+```
+Launchable recorded 1 commit from repository /home/runner/work/hands-on/hands-on
+Launchable recorded build 3096604891 to workspace organization/workspace with commits from 1 repository:
+| Name   | Path   | HEAD Commit                              |
+|--------|--------|------------------------------------------|
+| .      | .      | 5ea0a739271071dfbdacd330b0cc28c307151a04 |
+```
+
+## Start a test session and obtain a subset
+Next, we'll mark that we are starting a test session. We've also looked at this in Lab 2.
+We'll then obtain the subset of tests that should be run for this build, and pass it to the test runner,
+which is Maven in this case.
+
+Notice the `--observation` flag. This is [the training wheel mode](https://www.launchableinc.com/docs/features/predictive-test-selection/observing-subset-behavior/). With this flag, Smart Test
+will go through all the motions, except for actually returning all the tests. We'll use this mode
+to observe the behavior/performance of the test selection, hence the name.
+
+Update `.github/workflows/pre-merge.yml` as follows:
+```diff
+      - name: Compile
+        run: mvn compile
++     - name: Launchable subset
++       run: |
++         launchable record session --build ${{ github.run_id }} --observation --test-suite unit-test > session.txt
++         launchable subset --session $(cat session.txt) --target 50%  maven src/test/java > launchable-subset.txt
++         cat launchable-subset.txt
+      - name: Test
+        run: mvn test
+```
+<details>
+<summary>Raw text for copying</summary>
+
+```
+- name: Launchable subset
+  run: |
+    launchable record session --build ${{ github.run_id }} --observation --test-suite unit-test > session.txt
+    launchable subset --session $(cat session.txt) --target 50% maven src/test/java > launchable-subset.txt
+    cat launchable-subet.txt
+```
+
+</details>
+<br>
+
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'start subsetting'
+git push
+```
+
+When you, you should see something like this. Details might vary:
 
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
@@ -71,23 +224,14 @@ example.AddTest
 example.SubTest
 ```
 
-Next, use this subset result for testing.
+Next, pass this subset to the test runner.
 
 ```diff
-      - name: Launchable verify
-        run: launchable verify
-      - name: launchable record build
-        run: launchable record build --name ${{ github.run_id }}
-      - name: launchable subset
-        run: |
-          launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
-          cat launchable-subset.txt
-      - name: Test
-+       run: mvn test -Dsurefire.includesFile=launchable-subset.txt
-      - name: Launchable record tests
-         run: launchable record tests maven ./**/target/surefire-reports
-```
 
+      - name: Test
+-       run: mvn test
++       run: mvn test -Dsurefire.includesFile=launchable-subset.txt
+```
 <details>
 <summary>Raw text for copying</summary>
 
@@ -98,212 +242,72 @@ run: mvn test -Dsurefire.includesFile=launchable-subset.txt
 </details>
 <br>
 
-After the job succeeded, you can check the subset impact on web application. From the sidebar, go to  **Predictive Test Selection > Observe**:
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'use the subset result'
+git push
+```
 
-<img src="https://user-images.githubusercontent.com/536667/195478410-6402773f-d232-46af-8543-24a7f6b67b4f.png">
+## Record test results
+After tests are run, you need to report the test results to Launchable. This is done by the **launchable record tests** command.
 
+If the test fail, GitHub Actions will stop the job and the test results will not be reported to Launchable. Therefore, you need to set `if: always()` so that test results are always reported.
+
+Update `.github/workflows/pre-merge.yml` as follows:
+```diff
+      - name: Test
+        run: mvn test -Dsurefire.includesFile=launchable-subset.txt
++     - name: Launchable record tests
++       if: always()
++       run: launchable record tests --session $(cat session.txt) maven ./**/target/surefire-reports
+```
+<details>
+<summary>Raw text for copying</summary>
+
+```
+- name: Launchable record tests
+  if: always()
+  run: launchable record tests --session $(cat session.txt) maven ./**/target/surefire-reports
+```
+
+</details>
 <br>
+
+```
+git add .github/workflows/pre-merge.yml
+git commit -m 'report test results'
+git push
+```
+
+## Check the results
+If everything is set up correctly, you can view the test results on Launchable as shown below: (A URL to this page is in the GitHub Actions log)
+
+<img src="https://github.com/user-attachments/assets/f83dd1e6-bf9e-4091-964c-da665ffd764d" width="50%">
+
+You should also see the report from the subset observation:
 
 ![image](https://user-images.githubusercontent.com/536667/195477376-500d318a-b67a-4202-8c90-81ca6048dcc4.png)
 
-## Stop observation mode
+## Go live
+If this was a real project, we'd keep the `--observation` flag until we accumulate enough data, then
+evaluate its performance & roll out. In this workshop, we can skip this step and go live right away.
 
-If you have confirmed the subset impact, remove the observation option and reduce the test durations.
-
-Edit `.github/workflows/pre-merge.yml` as follows:
 ```diff
-      - name: launchable record build
-        run: launchable record build --name ${{ github.run_id }}
-      - name: launchable subset
+      - name: Launchable subset
         run: |
-          mvn test-compile
--         launchable subset --observation --target 50% maven src/test/java > launchable-subset.txt
-+         launchable subset --target 50% maven src/test/java > launchable-subset.txt
-          cat launchable-subset.txt
+          launchable record session --build ${{ github.run_id }} > session.txt
+-         launchable subset --session $(cat session.txt) --observation maven src/test/java > launchable-subset.txt
++         launchable subset --session $(cat session.txt) maven src/test/java > launchable-subset.txt
       - name: Test
         run: mvn test
 ```
 
-<details>
-<summary>Raw text for copying</summary>
+Let's apply this change and check the result.
 
 ```
-launchable subset --target 50% maven src/test/java > launchable-subset.txt
+git add .github/workflows/pre-merge.yml
+git commit -m 'disable observation mode'
+git push
 ```
-
-</details>
-<br>
-
-You can confirm that the number of test cases executed has changed as follows (The test count may vary.):
-
-**Test Log**
-
-- Before
-```
-[INFO] Results:
-[INFO]
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
-```
-
-- After
-```
-[INFO] Results:
-[INFO]
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
-```
-
-**Subset Result**
-
-- Before
-```
-|   Files found |   Tests found |   Tests passed |   Tests failed |   Total duration (min) |
-|---------------|---------------|----------------|----------------|------------------------|
-|             4 |             4 |              4 |              0 |                 0.0001 |
-```
-
-- After
-```
-|   Files found |   Tests found |   Tests passed |   Tests failed |   Total duration (min) |
-|---------------|---------------|----------------|----------------|------------------------|
-|             2 |             2 |              2 |              0 |                 0.0001 |
-```
-
- ## Change subset target value
-
- There are three subset type.
-
- ```
- launchable subset \
-    # one of:
-    --target [PERCENTAGE]
-    # or
-    --confidence [PERCENTAGE]
-    # or
-    --time [STRING] \
-    [other options...]
-```
-
-This time, change target value and confirm that the result changes.
-
-```diff
-      - name: launchable record build
-        run: launchable record build --name ${{ github.run_id }}
-      - name: launchable subset
-        run: |
-          mvn test-compile
--         launchable subset --target 50% maven src/test/java > launchable-subset.txt
-+         launchable subset --target 25% maven src/test/java > launchable-subset.txt
-          cat launchable-subset.txt
-      - name: Test
-```
-<details>
-<summary>Raw text for copying</summary>
-
-```
-launchable subset --target 25% maven src/test/java > launchable-subset.txt
-```
-
-</details>
-<br>
-
-
-The subset result will change as shown below. You can confirm that the number of subset candidates changes from 2 to 1. (The ratio between the subset and the rest may vary.)
-```
-|           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
-|-----------|--------------|--------------------------|----------------------------|
-| Subset    |            1 |                  9.63855 |                  0.0133333 |
-| Remainder |            3 |                 90.3614  |                  0.125     |
-|           |              |                          |                            |
-| Total     |            4 |                100       |                  0.138333  |
-```
-
-## Add new test case
-
-In this section, add a new function along with its test, and confirm that both the added test and its related tests are executed. You will add new function called `Exponentiation`.
-
-First, add test code and dummy method to prevent compile errors.
-
-Create the file `src/test/java/example/ExponentiationTest.java`
-```java
-package example;
-
-import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
-
-public class ExponentiationTest {
-  @Test
-  public void exponentiation() {
-    assertThat(new Exponentiation().calc(2, 5), is(32));
-  }
-}
-```
-
-Then, create the file `src/main/java/example/Exponentiation.java`
-```java
-package example;
-
-public class Exponentiation {
-  public int calc(int x, int y) {
-    return 0;
-  }
-}
-```
-
-At this point, the  test will fail:
-
-```
-Run `launchable inspect subset --subset-id xxx` to view full subset details
-example.ExponentiationTest
-example.SubTest
-```
-
-The test results recorded on GitHub Actions will show:
-
-```
-|   Files found |   Tests found |   Tests passed |   Tests failed |   Total duration (min) |
-|---------------|---------------|----------------|----------------|------------------------|
-|             2 |             2 |              1 |              1 |                 0.0001 |
-```
-
-Now, implement the code:
-
-```java
- public class Exponentiation {
-   public int calc(int x, int y) {
--    return 0;
-+    int exp = 1;
-+    for (; y != 0; y--) {
-+      exp = new Mul().calc(exp, x);
-+    }
-+    return exp;
-   }
- }
-```
-<details>
-<summary>Raw text for copying</summary>
-
-```java
-int exp = 1;
-for (; y != 0; y--) {
-  exp = new Mul().calc(exp, x);
-}
-return exp;
-```
-
-</details>
-<br>
-
-You can confirm the both `ExponentiationTest.java` and `MulTest.java` are selected for testing.
-
-Finally, merge PR2 to main to complete this section.
-
-You have learned how to introduce the **subset** command. You can confirm that the new test and its related tests were selected by **launchable subset**.
-
-___
-
-Prev: [Hands-on 2](HANDSON2.md)
 
 
