@@ -4,6 +4,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+env:
+  LAUNCHABLE_ORGANIZATION: "launchable-demo"
+  LAUNCHABLE_WORKSPACE: "hands-on-lab"
+
 jobs:
   PreMergeTest:
     runs-on: ubuntu-latest
@@ -13,6 +17,13 @@ jobs:
         with:
           java-version: 21
           distribution: "adopt"
+	 - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install Launchable command
+        run: pip install --user --upgrade launchable~=1.0
+      - name: launchable verify
+        run: launchable verify
       - name: Compile
         run: mvn compile
       - name: Test
