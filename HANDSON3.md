@@ -17,7 +17,7 @@ After entering the required information, click **Crete fork** button.
 Let's clone a forked repository
 
 ```sh
-git clone  https://github.com/YOUR-USERNAME/REPOSITORY-NAME smarttests-workshop
+git clone  git@github.com/YOUR-USERNAME/REPOSITORY-NAME.git smarttests-workshop
 cd smarttests-workshop
 git switch -c workshop
 ```
@@ -82,7 +82,7 @@ Let's push these changes and check the result.
 ```sh
 git add .github/workflows/pre-merge.yml
 git commit -m 'initial set up'
-git push
+git push origin workshop
 ```
 
 And, create a Pull Request from your repository to the original (launchableinc/hands-on-lab) repository. After running GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
@@ -153,7 +153,7 @@ run: pip install --user --upgrade launchable~=1.0
 ```
 git add .github/workflows/pre-merge.yml
 git commit -m 'start sending build data'
-git push
+git push origin workshop
 ```
 
 If the setup is successful, you will see logs similar to the following:
