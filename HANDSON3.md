@@ -37,9 +37,6 @@ Update your `.github/workflows/pre-merge.yml` as follows:
 +       run: pip install --user --upgrade launchable~=1.0
       - name: Compile
         run: mvn compile
-          with:
-           java-version: 21
-           distribution: "adopt"
 ```
 <details>
 <summary>Raw text for copying</summary>
