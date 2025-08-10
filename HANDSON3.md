@@ -2,30 +2,20 @@
 
 In this section, you will use a toy Java project in this repository and its delivery pipeline based on GitHub Action as an example, to gain better understanding of how to use Smart Tests in your CI pipeline.
 
-# Fork this repository
-Click the **Fork** button to create your own copy of this repository, so that you can make changes in it.
+## Before you start
+1. Your instructor has already forked a repository from `launchableinc/hands-on-lab` for you to make changes in
+2. You are added as a collaborator to this fork to make edits
+3. Create PRs to merge changes into `launchableinc/hands-on-lab`
 
-<img src="https://github.com/user-attachments/assets/03757336-0b5f-48fb-847b-5e8b6924ce10" width="50%">
+# Integrating the Launchable CLI
 
-After entering the required information, click **Create fork** button.
+## Open the workflow file
+1. In the instructor's fork, navigate to `.github/workflows/pre-merge.yml` file
+2. Click the Edit (pencil) icon
 
-<img src="https://github.com/user-attachments/assets/bcab29b8-d217-4bd2-b4a6-42780e99b4c3" width="50%">
-
-
-## Clone the forked repository to your local computer
-
-Let's clone a forked repository
-
-```sh
-git clone  git@github.com/YOUR-USERNAME/REPOSITORY-NAME.git smarttests-workshop
-cd smarttests-workshop
-git switch -c workshop
-```
-
-## Install the Launchable command in CI pipeline
-First step of the integration is to make the `launchable` command available in the CI pipeline.
-
+## Install the Launchable command
 Update your `.github/workflows/pre-merge.yml` as follows:
+
 ```diff
         with:
           java-version: 21
@@ -52,8 +42,10 @@ Update your `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
-Next, to help you make sure that you have everything set up correctly, we have the `launchable verify` command, so we'll add it to the pipeline as well.
+Commit directly to the main branch by clicking **Commit changes**.
 
+## Verify the Launchable CLI
+Next, to help you make sure that you have everything set up correctly, we have the `launchable verify` command, so we'll add it to the pipeline as well.
 
 Update `.github/workflows/pre-merge.yml` by adding:
 ```diff
@@ -77,15 +69,11 @@ Update `.github/workflows/pre-merge.yml` by adding:
 </details>
 <br>
 
-Let's push these changes and check the result.
+Commit directly to the main branch by clicking **Commit changes**.
 
-```sh
-git add .github/workflows/pre-merge.yml
-git commit -m 'initial set up'
-git push origin workshop
-```
+## Create a PR
 
-And, create a Pull Request from your repository to the original (launchableinc/hands-on-lab) repository. After running GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
+Now, create a Pull Request from this repository to the original `launchableinc/hands-on-lab` repository. After running GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
 
 ```
 Organization: launchable-demo
