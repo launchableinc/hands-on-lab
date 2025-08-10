@@ -7,7 +7,7 @@ Click the **Fork** button to create your own copy of this repository, so that yo
 
 <img src="https://github.com/user-attachments/assets/03757336-0b5f-48fb-847b-5e8b6924ce10" width="50%">
 
-After entering the required information, click **Crete fork** button.
+After entering the required information, click **Create fork** button.
 
 <img src="https://github.com/user-attachments/assets/bcab29b8-d217-4bd2-b4a6-42780e99b4c3" width="50%">
 
