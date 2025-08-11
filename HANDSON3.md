@@ -1,31 +1,22 @@
-# Lab 3. Incorporate Smart Tests into your CI pipeline
+# Lab 3. Incorporate Smart Tests into your CI workflow
 
-In this section, you will use a toy Java project in this repository and its delivery pipeline based on GitHub Action as an example, to gain better understanding of how to use Smart Tests in your CI pipeline.
+In this section, you will use a toy Java project in this repository and its delivery workflow based on GitHub Action as an example, to gain better understanding of how to use Smart Tests in your CI workflow.
 
-# Fork this repository
-Click the **Fork** button to create your own copy of this repository, so that you can make changes in it.
+# Before you start
+1. Your instructor has already forked a repository from `launchableinc/hands-on-lab` for you to make changes in
+2. You are added as a collaborator to this fork to make edits
+3. Create your own branch as `workshop-<your-name>`
+4. You will create PR to merge changes into `launchableinc/hands-on-lab`
 
-<img src="https://github.com/user-attachments/assets/03757336-0b5f-48fb-847b-5e8b6924ce10" width="50%">
+# Integrating with Launchable
 
-After entering the required information, click **Create fork** button.
+In the instructor's fork, navigate to `.github/workflows/pre-merge.yml` file and click on the **Edit (pencil)** icon
 
-<img src="https://github.com/user-attachments/assets/bcab29b8-d217-4bd2-b4a6-42780e99b4c3" width="50%">
+<img width="319" height="99" alt="image" src="https://github.com/user-attachments/assets/49e2d08b-f920-4d28-9947-c640ba3ae115" />
 
+## Add the Launchable CLI to workflow
+Update `.github/workflows/pre-merge.yml` as follows:
 
-## Clone the forked repository to your local computer
-
-Let's clone a forked repository
-
-```sh
-git clone  git@github.com/YOUR-USERNAME/REPOSITORY-NAME.git smarttests-workshop
-cd smarttests-workshop
-git switch -c workshop
-```
-
-## Install the Launchable command in CI pipeline
-First step of the integration is to make the `launchable` command available in the CI pipeline.
-
-Update your `.github/workflows/pre-merge.yml` as follows:
 ```diff
         with:
           java-version: 21
@@ -52,10 +43,10 @@ Update your `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
-Next, to help you make sure that you have everything set up correctly, we have the `launchable verify` command, so we'll add it to the pipeline as well.
+## Verify the Launchable CLI setup
+Next, to help you make sure that you have everything set up correctly, we have the `launchable verify` command, so we'll add it to the workflow as well.
 
-
-Update `.github/workflows/pre-merge.yml` by adding:
+Update `.github/workflows/pre-merge.yml` as follows:
 ```diff
        - name: Install Launchable command
          run: pip install --user --upgrade launchable~=1.0
@@ -77,15 +68,12 @@ Update `.github/workflows/pre-merge.yml` by adding:
 </details>
 <br>
 
-Let's push these changes and check the result.
+## Create a Pull Request to base repo
+Push these changes by clicking on **Commit changes**.
 
-```sh
-git add .github/workflows/pre-merge.yml
-git commit -m 'initial set up'
-git push origin workshop
-```
+<img width="407" height="151" alt="image" src="https://github.com/user-attachments/assets/7687ca9e-2c30-4c2b-bf0c-c093d65c7f21" />
 
-And, create a Pull Request from your repository to the original (launchableinc/hands-on-lab) repository. After running GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
+Create a Pull Request from your repository to the original `launchableinc/hands-on-lab` repository. Once you run GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
 
 ```
 Organization: launchable-demo
@@ -98,11 +86,10 @@ launchable version: '1.110.0'
 Your CLI configuration is successfully verified 🎉
 ```
 
-## Record the build information
-
+# Recording build information
 Now, let's record the build information. We've already looked at what this does in Lab 2.
 
-Launchable uses commit history to train models, so you need to use a full clone.
+## Enable full Git history
 
 Update `.github/workflows/pre-merge.yml` as follows:
 ```diff
@@ -126,8 +113,10 @@ with:
 </details>
 <br>
 
-Next, execute the **launchable record build** command.
+## Record build with Launchable CLI
+Next, execute the `launchable record build` command.
 
+Update `.github/workflows/pre-merge.yml` as follows:
 ```diff
 run: pip install --user --upgrade launchable~=1.0
        - name: Launchable verify
@@ -150,13 +139,7 @@ run: pip install --user --upgrade launchable~=1.0
 </details>
 <br>
 
-```
-git add .github/workflows/pre-merge.yml
-git commit -m 'start sending build data'
-git push origin workshop
-```
-
-If the setup is successful, you will see logs similar to the following:
+Commit changes directly to your branch by clicking on **Commit changes**. If the setup is successful, you will see logs similar to the following:
 
 ```
 Launchable recorded 1 commit from repository /home/runner/work/hands-on/hands-on
@@ -166,10 +149,11 @@ Launchable recorded build 3096604891 to workspace organization/workspace with co
 | .      | .      | 5ea0a739271071dfbdacd330b0cc28c307151a04 |
 ```
 
-## Start a test session and obtain a subset
-Next, we'll mark that we are starting a test session. We've also looked at this in Lab 2.
-We'll then obtain the subset of tests that should be run for this build, and pass it to the test runner,
-which is Maven in this case.
+# Running test session by predicting a subset
+Now, we will start a test session. We have also looked at this in Lab 2.
+
+## Add Launchable subset command
+We will first obtain the subset of tests that should be run for this build. then pass it to the test runner, which is Maven in this case.
 
 Notice the `--observation` flag. This is [the training wheel mode](https://www.launchableinc.com/docs/features/predictive-test-selection/observing-subset-behavior/). With this flag, Smart Test
 will go through all the motions, except for actually returning all the tests. We'll use this mode
@@ -201,13 +185,7 @@ Update `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
-```
-git add .github/workflows/pre-merge.yml
-git commit -m 'start subsetting'
-git push
-```
-
-When you, you should see something like this. Details might vary:
+Commit changes directly to your branch by clicking on **Commit changes**. If the setup is successful, you will see logs similar to the following, although the details might vary:
 
 ```
 |           |   Candidates |   Estimated duration (%) |   Estimated duration (min) |
@@ -216,7 +194,6 @@ When you, you should see something like this. Details might vary:
 | Remainder |            2 |                  63.5294 |                  0.09      |
 |           |              |                          |                            |
 | Total     |            4 |                 100      |                  0.141667  |
-
 Run `launchable inspect subset --subset-id XXX` to view full subset details
 example.MulTest
 example.DivTest
@@ -224,6 +201,7 @@ example.AddTest
 example.SubTest
 ```
 
+## Run Maven tests with subset
 Next, pass this subset to the test runner.
 
 ```diff
@@ -242,16 +220,14 @@ run: mvn test -Dsurefire.includesFile=launchable-subset.txt
 </details>
 <br>
 
-```
-git add .github/workflows/pre-merge.yml
-git commit -m 'use the subset result'
-git push
-```
+Commit changes directly to your branch by clicking on **Commit changes**.
 
-## Record test results
+# Record test results
 After tests are run, you need to report the test results to Launchable. This is done by the **launchable record tests** command.
 
 If the test fail, GitHub Actions will stop the job and the test results will not be reported to Launchable. Therefore, you need to set `if: always()` so that test results are always reported.
+
+## Record tests to Launchable
 
 Update `.github/workflows/pre-merge.yml` as follows:
 ```diff
@@ -273,13 +249,9 @@ Update `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
-```
-git add .github/workflows/pre-merge.yml
-git commit -m 'report test results'
-git push
-```
+Commit changes directly to your branch by clicking on **Commit changes**.
 
-## Check the results
+# Check results in Launchable web-app
 If everything is set up correctly, you can view the test results on Launchable as shown below: (A URL to this page is in the GitHub Actions log)
 
 <img src="https://github.com/user-attachments/assets/f83dd1e6-bf9e-4091-964c-da665ffd764d" width="50%">
@@ -288,7 +260,7 @@ You should also see the report from the subset observation:
 
 ![image](https://user-images.githubusercontent.com/536667/195477376-500d318a-b67a-4202-8c90-81ca6048dcc4.png)
 
-## Go live
+# Go live
 If this was a real project, we'd keep the `--observation` flag until we accumulate enough data, then
 evaluate its performance & roll out. In this workshop, we can skip this step and go live right away.
 
@@ -304,10 +276,4 @@ evaluate its performance & roll out. In this workshop, we can skip this step and
 
 Let's apply this change and check the result.
 
-```
-git add .github/workflows/pre-merge.yml
-git commit -m 'disable observation mode'
-git push
-```
-
-
+Commit changes directly to your branch by clicking on **Commit changes**.
