@@ -12,6 +12,8 @@ In this section, you will use a toy Java project in this repository and its deli
 
 In the instructor's fork, navigate to `.github/workflows/pre-merge.yml` file and click on the **Edit (pencil)** icon
 
+<img width="319" height="99" alt="image" src="https://github.com/user-attachments/assets/49e2d08b-f920-4d28-9947-c640ba3ae115" />
+
 ## Add the Launchable CLI to workflow
 Update `.github/workflows/pre-merge.yml` as follows:
 
@@ -67,7 +69,11 @@ Update `.github/workflows/pre-merge.yml` as follows:
 <br>
 
 ## Create a Pull Request to base repo
-Push these changes by clicking on **Commit changes**. Create a Pull Request from your repository to the original `launchableinc/hands-on-lab` repository. Once you run GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
+Push these changes by clicking on **Commit changes**.
+
+<img width="407" height="151" alt="image" src="https://github.com/user-attachments/assets/7687ca9e-2c30-4c2b-bf0c-c093d65c7f21" />
+
+Create a Pull Request from your repository to the original `launchableinc/hands-on-lab` repository. Once you run GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
 
 ```
 Organization: launchable-demo
