@@ -69,11 +69,24 @@ Update `.github/workflows/pre-merge.yml` as follows:
 <br>
 
 ## Create a Pull Request to base repo
-Push these changes by clicking on **Commit changes**.
+Now it's time to push these changes in and complete the integration process.
+1. Commit your changes
+   - Click on  **Commit changes**
+   - Add a commit message like, `Installing Launchable CLI`
+   - Commit directly to your existing branch `workshop-<your-name>`
 
 <img width="407" height="151" alt="image" src="https://github.com/user-attachments/assets/7687ca9e-2c30-4c2b-bf0c-c093d65c7f21" />
 
-Create a Pull Request from your repository to the original `launchableinc/hands-on-lab` repository. Once you run GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
+2. Open a PR
+   - Create a new PR from the `Pull requests' tab
+   - Under base repository, select `launchableinc/hands-on-lab` and base branch as `main`
+   - Under head repository, select your instructor's shared repository and head branch as `workshop-<your-name>`
+   - Click on **Create pull request**
+
+3. View the GitHub Actions logs to to verify the setup
+   - In the Pull Request, click the Checks tab
+   - Click the running workflow job
+   - Scroll through the logs until you see a block like this:
 
 ```
 Organization: launchable-demo
