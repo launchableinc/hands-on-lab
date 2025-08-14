@@ -4,6 +4,8 @@ This is a guide for the instructor on what they need to do, to run this workshop
 ## Setup new Launchable workspace
 Go to [customer success storefront](https://cloudbees.atlassian.net/wiki/spaces/LCHCTS/pages/4448921585/Storefront+Launchable+Customer+Success), create a new workspace, then use the workspace flag app to (1) enable PTS, and (2) set the state to "HANDS_ON_LAB_V2"
 
+# HANDSON3 instructions
+
 ## Create a forked repository of workshop
 You need to fork the [`launchableinc/hands-on-lab](https://github.com/launchableinc/hands-on-lab) repository to your own account
 
