@@ -77,17 +77,24 @@ Now it's time to push these changes in and complete the integration process.
 
 <img width="407" height="151" alt="image" src="https://github.com/user-attachments/assets/7687ca9e-2c30-4c2b-bf0c-c093d65c7f21" />
 
-2. Open a PR
-   - Create a new PR from the `Pull requests' tab
-   - Under base repository, select `launchableinc/hands-on-lab` and base branch as `main`
-   - Under head repository, select your instructor's shared repository and head branch as `workshop-<your-name>`
+2. Open a new Pull Request
+   - Go to the **Actions** tab in the top navigation of GitHub
+   - Your new changes are already detected. To create PR, click on **Compare & pull request**
+   - To make sure you merge your changes into the right place
+     - Under base repository, select `launchableinc/hands-on-lab`
+     - Under base branch select `main`
+     - Under head repository, select the name of your instructor's shared repository
+     - Under head branch select `workshop-<your-name>`
    - Click on **Create pull request**
 
-3. View the GitHub Actions logs to to verify the setup
-   - In the Pull Request, click the Checks tab
-   - Click the running workflow job
-   - Scroll through the logs until you see a block like this:
+<img width="695" height="50" alt="Screenshot 2025-08-14 at 2 50 35 PM" src="https://github.com/user-attachments/assets/0ee448a7-439f-4288-8cb1-970fa6c1208c" />
 
+4. View the GitHub Actions logs to to verify the setup
+   - In the Pull Request, click the **Checks** tab
+   - Click on the workflow job
+<img width="569" height="50" alt="Screenshot 2025-08-14 at 2 58 41 PM" src="https://github.com/user-attachments/assets/51665a30-f037-4bea-a324-e0f75438d4aa" />
+   
+Scroll through the logs until you see a block like this:
 ```
 Organization: launchable-demo
 Workspace: hands-on-lab
