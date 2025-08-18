@@ -1,5 +1,4 @@
-name: Launchable Demo
-
+name: Smart Tests Demo
 on:
   pull_request:
   workflow_dispatch:
