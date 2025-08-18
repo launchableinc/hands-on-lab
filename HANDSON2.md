@@ -77,7 +77,7 @@ Now, let's have Smart Tests select the best set of tests to run for this test se
 
  ```
  launchable subset --session $(cat session.txt) --get-tests-from-guess file > subset.txt
- $ cat subset.txt
+ cat subset.txt
 ```
 
 Since you haven't run any tests yet, Smart Tests will select files in your repository
