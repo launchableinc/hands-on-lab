@@ -3,17 +3,14 @@
 In this section, you will test drive Predictive Test Selection (PTS) on your own computer.
 Along the way, you will learn the major concepts of Smart Test.
 
-## Make a change you want to test
-For the purpose of this workshop, let's make a small change in your software to explore PTS in action.
-Don't worry, the commit you'll create will stay in your computer.
+## Clone your repository
+To experiment with Smart Tests, first, let's clone your repository locally.
+How to do this depends on your project.
 
 ```
+git clone ...
 cd your/repository
-git switch --create test-launchable
-vim <UPDATE YOUR APP or TEST CODE>
-git commit --all --message 'test launchable'
 ```
-
 
 ## Capture software under test
 
@@ -84,42 +81,50 @@ Now, let's have Smart Tests select the best set of tests to run for this test se
 ```
 
 Since you haven't run any tests yet, Smart Tests will select files in your repository
-that looks like tests, and order them in the order it thinks is most relevant to
-the change you just made:
+that looks like tests, and order them such that tests relevant to most recent changes are prioritized.
+
+> [!TIP]
+> We'll use this baseline `subset.txt` later to see how additional changes affect the test selection,
+> so please keep this file around.
+
 
 As you run and record test results, Smart Tests will learn from the results and improve its selection.
 Among other things, you will be able to specify the size of the subset you'd like to obtain, for example
 "give me 10 minutes worth of tests to run".
 
-## Compare subsets with different changes
 
-So far, you've tried PTS with one change. Now, let's try making a different change and compare the results.
+
+## Make a change you want to test, and see how that affects the subset
+When a developer makes a change to the code, we want Smart Tests to select the tests that
+are most relevant to that change. To experiment with this, let's make a small change.
+Don't worry, the commit you'll create will stay in your computer.
 
 ```
 vim <UPDATE YOUR APP or TEST CODE>
-git commit --all --message 'test launchable 2'
+git commit --all --message test
 ```
 
-Run the following command again to record new change:
+We now have a new software version to test, so we need to record it as a new build:
 
 ```
 launchable record build --name mychange2
 ```
 
-Create a new test session and request a subset again:
+Create a new test session against the new build and request a subset again:
 
 ```
 launchable record session --build mychange2 > session2.txt
 launchable subset --session $(cat session2.txt) --get-tests-from-guess file > subset2.txt
 ```
 
-Compare the results between the first and second subsets:
+Compare the results between the first and the second subsets:
 
 ```
 launchable compare subsets subset.txt subset2.txt
 ```
 
-> [!TIP]
-> Try making different changes in your code and see how the selected tests change.
+The command should display the rank of every test in those two subsets, and highlight the differences in the rank.
+You should see that the tests relevant to your change bubble up in the rank.
+
 
 You can now move on to [the next step](HANDSON3.md).
