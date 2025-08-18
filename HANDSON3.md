@@ -3,14 +3,12 @@
 In this section, you will use a toy Java project in this repository and its delivery workflow based on GitHub Action as an example, to gain better understanding of how to use Smart Tests in your CI workflow.
 
 # Before you start
-1. Your instructor has already forked a repository from `launchableinc/hands-on-lab` for you to make changes in
-2. You are added as a collaborator to this fork to make edits
-3. Create your own branch as `workshop-<your-name>`
-4. You will create PR to merge changes into `launchableinc/hands-on-lab`
+Your instructor should have created a pull request to `launchableinc/hands-on-lab`. This is where the toy Java
+project resides, and in this PR we'll modify its CI pipeline.
 
 # Integrating with Launchable
 
-In the instructor's fork, navigate to `.github/workflows/pre-merge.yml` file and click on the **Edit (pencil)** icon
+Start with the PR, and follow the "edit CI script" link in the PR description to open the CI script in the editor.
 
 <img width="319" height="99" alt="image" src="https://github.com/user-attachments/assets/49e2d08b-f920-4d28-9947-c640ba3ae115" />
 
