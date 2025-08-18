@@ -24,6 +24,8 @@ jobs:
         run: pip install --user --upgrade launchable~=1.0
       - name: Launchable verify
         run: launchable verify
+      - name: Launchable record build
+        run: launchable record build --name ${{github.run_id }}
       - name: Compile
         run: mvn compile
       - name: Test
