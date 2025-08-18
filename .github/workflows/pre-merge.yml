@@ -34,4 +34,4 @@ jobs:
           launchable subset --session $(cat session.txt) --target 50% maven src/test/java > launchable-subset.txt
           cat launchable-subset.txt
       - name: Test
-        run: mvn test
+        run: mvn test -Dsurefire.includesFile=launchable-subset.txt
