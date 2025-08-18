@@ -91,6 +91,34 @@ As you run and record test results, Smart Tests will learn from the results and 
 Among other things, you will be able to specify the size of the subset you'd like to obtain, for example
 "give me 10 minutes worth of tests to run".
 
+## Compare subsets with different changes
+
+So far, you've tried PTS with one change. Now, let's try making a different change and compare the results.
+
+```
+vim <UPDATE YOUR APP or TEST CODE>
+git commit --all --message 'test launchable 2'
+```
+
+Run the following command again to record new change:
+
+```
+launchable record build --name mychange2
+```
+
+Create a new test session and request a subset again:
+
+```
+launchable record session --build mychange2 > session2.txt
+launchable subset --session $(cat session2.txt) --get-tests-from-guess file > subset2.txt
+```
+
+Compare the results between the first and second subsets:
+
+```
+launchable compare subsets subset.txt subset2.txt
+```
+
 > [!TIP]
 > Try making different changes in your code and see how the selected tests change.
 
