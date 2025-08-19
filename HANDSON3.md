@@ -10,7 +10,7 @@ project resides, and in this PR we'll modify its CI pipeline.
 
 Start with the PR, and follow the "edit CI script" link in the PR description to open the CI script in the editor.
 
-<img width="319" height="99" alt="image" src="https://github.com/user-attachments/assets/49e2d08b-f920-4d28-9947-c640ba3ae115" />
+<img width="742" height="425" alt="image" src="https://github.com/user-attachments/assets/b4e5749a-a226-4607-af50-58d96d879848" />
 
 ## Add the Launchable CLI to workflow
 Update `.github/workflows/pre-merge.yml` as follows:
@@ -66,12 +66,30 @@ Update `.github/workflows/pre-merge.yml` as follows:
 </details>
 <br>
 
-## Create a Pull Request to base repo
-Push these changes by clicking on **Commit changes**.
+## Commit the changes
+Add these changes to the PR by clicking on **Commit changes**.
 
 <img width="407" height="151" alt="image" src="https://github.com/user-attachments/assets/7687ca9e-2c30-4c2b-bf0c-c093d65c7f21" />
 
-Create a Pull Request from your repository to the original `launchableinc/hands-on-lab` repository. Once you run GitHub Actions, you will see verification logs on GitHub Actions if the setup is successful:
+(Commit directly to the branch, as opposed to create a new branch)
+
+When the commit goes through, come back to the PR page to see the newly added commit. Depending on the status of the CI run, you will see one of the icons on the left of the commit hash:
+
+<img width="672" height="83" alt="image" src="https://github.com/user-attachments/assets/afb51dd1-353f-4b6d-b453-e47c37f7184e" />
+
+* 🟡 if a CI run is ongoing
+* ❌ if a CI run has failed
+* ✔️ if a CI run has completed successfully
+* None if a CI run hasn't started, or if there was a syntax error in the edit you just made.
+
+> [!TIP]
+> You might have to reload the page to see the commit and its status updated.
+
+Using the following screenshot as an example, click the status symbol, and select "details" to jump to the CI log.
+
+<img width="723" height="169" alt="image" src="https://github.com/user-attachments/assets/997dd7ef-87a7-4d8d-b917-b37d5b46895a" />
+
+If everything goes as expected, in the "Launchable verify" section, you should see a message like this:
 
 ```
 Organization: launchable-demo
