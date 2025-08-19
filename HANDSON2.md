@@ -1,221 +1,130 @@
-# Hands-on 2. Introduce the Launchable Command
+# Lab 2. Try predictive test selection
 
-In this section, you will set up the [Launchable command](https://www.launchableinc.com/docs/resources/cli-reference/) in the CI and configure it to send test results to the server.
+In this section, you will test drive Predictive Test Selection (PTS) on your own computer.
+Along the way, you will learn the major concepts of Smart Test.
 
-Then, you will:
-
-1. Install the Launchable command
-1. Set up `launchable record build`
-1. Set up `launchable record tests`
-
-You will be editing `.github/workflows/pre-merge.yaml` and setting up the [Launchable command](https://www.launchableinc.com/docs/resources/cli-reference/).
-
-
-Before you begin, create a new branch named `PR1`.
-
-```sh
-$ git switch -c PR1
-$ git commit --allow-empty -m "introduce the Launchable command"
-$ git push origin PR1
-```
-
- Then, create a pull request from the `PR1` branch to `main` branch.
-
-## Install the Launchable Command
-
-Let's install the Launchable command. The command is written in Python and requires Java for some commands. However, since this hands-on project already uses Java and it is set up it, you don't need to install Java this time.
-
-Update your `.github/workflows/pre-merge.yml` as follows:
-```diff
-        with:
-          java-version: 21
-          distribution: "adopt"
-+     - uses: actions/setup-python@v5
-+       with:
-+         python-version: '3.13'
-+     - name: Install Launchable command
-+       run: pip install --user --upgrade launchable~=1.0
-      - name: Compile
-        run: mvn compile
-          with:
-           java-version: 21
-           distribution: "adopt"
-```
-
-<details>
-<summary>Raw text for copying</summary>
+## Clone your repository
+To experiment with Smart Tests, first, let's clone your repository locally.
+How to do this depends on your project.
 
 ```
-- uses: actions/setup-python@v5
-  with:
-  python-version: '3.13'
-- name: Install Launchable command
-  run: pip install --user --upgrade launchable~=1.0
+git clone ...
+cd your/repository
 ```
 
-</details>
-<br>
+## Capture software under test
 
-If set up correctly, after pushing this change the Launchable command will be installed.
+In order to select the right tests for your software, Smart Tests need to know what software you are testing. We call this a **build**.
 
-Next, Let's access Launchable using your API Key. Set the API key to as an environment variable.
+A build is a specific version of your software that you are testing. It can consist of multiple Git repositories, and in each repository, it points to a specific commit. A build is identified by its name.
 
-Update `.github/workflows/pre-merge.yml` by adding:
-```diff
-   pull_request:
-   workflow_dispatch:
+> **build** represents the software. Each time you send test results to Smart Test, you record them against a specific build so that Smart Tests know that you ran X tests against Y software with Z results.
 
-+env:
-+  LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
-+
- jobs:
-   build:
-     runs-on: ubuntu-latest
+refs: [Documentation](https://www.launchableinc.com/docs/concepts/build/)
 
-...
+Therefore, before you run your tests, you record a build using `launchable record build`.
 
-          python-version: '3.10'
-       - name: Install Launchable command
-         run: pip install --user --upgrade launchable~=1.0
-+      - name: Launchable verify
-+        run: launchable verify
-       - name: Compile
-         run: mvn compile
-       - name: Test
+Move to the locally checked out copy of your software, check out its main branch,
+and run the following command to record a build:
 ```
-
-<details>
-<summary>Raw texts for copying</summary>
+launchable record build --name mychange1
+```
+If you see a message like this, it was successful:
 
 ```
-env:
-  LAUNCHABLE_TOKEN: ${{ secrets.LAUNCHABLE_TOKEN }}
-```
+Launchable transferred 2 more commits from repository <YOUR PATH>
+Launchable recorded build hands-on to workspace <YOUR ORG/WORKSPACE> with commits from 1 repository:
 
-<br>
-
-```
-- name: Launchable verify
-  run: launchable verify
-```
-
-</details>
-
-<br>
-
-You will see verification logs on GitHub Actions if the setup is successful:
-
-```
-Organization: '<YOUR ORGANIZATION NAME>'
-Workspace: '<YOUR WORKSPACE NAME>'
-Proxy: None
-Platform: 'Linux-6.8.0-1017-azure-x86_64-with-glibc2.39'
-Python version: '3.12.8'
-Java command: 'java'
-launchable version: '1.97.0'
-Your CLI configuration is successfully verified 🎉
-```
-
-## Set up "launchable record build" command
-
-Now, let's record the build information.
-
-Launchable uses commit history to train models, so you need to use a full clone.
-
-Update `.github/workflows/pre-merge.yml` as follows:
-```diff
-steps:
-       - uses: actions/checkout@v5
-+        with:
-+          fetch-depth: 0
-       - uses: actions/setup-java@v4
-         with:
-           java-version: 11
-```
-
-<details>
-<summary>Raw text for copying</summary>
-
-```
-with:
-  fetch-depth: 0
-```
-
-</details>
-<br>
-
-Next, execute the **launchable record build** command.
-
-```diff
-run: pip install --user --upgrade launchable~=1.0
-       - name: Launchable verify
-         run: launchable verify
-+      - name: Launchable record build
-+        run: launchable record build --name ${{ github.run_id }}
-       - name: Compile
-         run: mvn compile
-   worker-node-1:
-```
-
-<details>
-<summary>Raw text for copying</summary>
-
-```
-- name: Launchable record build
-  run: launchable record build --name ${{ github.run_id }}
-```
-
-</details>
-<br>
-
-You can view logs similar to the following if the setup is successful:
-
-```
-Launchable recorded 1 commit from repository /home/runner/work/hands-on/hands-on
-Launchable recorded build 3096604891 to workspace organization/workspace with commits from 1 repository:
 | Name   | Path   | HEAD Commit                              |
 |--------|--------|------------------------------------------|
-| .      | .      | 5ea0a739271071dfbdacd330b0cc28c307151a04 |
+| .      | .      | 3f21bfb3d56148c9dcf9f7e811e146bbc3cbf797 |
+
+Visit https://app.launchableinc.com/organizations/<ORG>/workspaces/<WORKSPACE>/data/builds/<BUILD ID> to view this build and its test sessions
 ```
 
-## Set up "launchable record tests" command
+What just happened? Smart Tests recorded the current HEAD of your local repository as the build,
+using the name given.
 
-This is a final section of #2, Try to report test results using by the **record test** command.
-If the test fail, GitHub Actions will stop the job and the test results will not be reported to Launchable. Therefore, you need to set `if: always()` so that  test results are always reported.
-
-Update `.github/workflows/pre-merge.yml` as follows:
-```diff
-      - name: Compile
-        run: mvn compile
-      - name: Test
-        run: mvn test
-+     - name: Launchable record tests
-+       if: always()
-+       run: launchable record tests maven ./**/target/surefire-reports
-```
-
-<details>
-<summary>Raw text for copying</summary>
+By default, this command looks at the current directory.
+If you have multiple repositories, you'll use the `--source` option to direct the command to the right repositories.
 
 ```
-- name: Launchable record tests
-  if: always()
-  run: launchable record tests maven ./**/target/surefire-reports
+launchable record build --name mychange1 --source app=path/to/repo1 --source test=path/to/repo2 ...
 ```
 
-</details>
-<br>
-
-If everything is set up correctly, you can view the test results on Launchable as shown below: (A URL is displayed in the GitHub Actions log)
-
-<img src="https://github.com/user-attachments/assets/f83dd1e6-bf9e-4091-964c-da665ffd764d" width="50%">
+In the above example, you are telling Smart Tests that the build consists of two repositories: `app` and `test`.
 
 
-If you have could confirmed the test result, **merge** this branch to main.
 
-___
+Since this was the first time you recorded a build, Smart Tests needed to transfer relatively
+large amount of data to its server, including recent commit history, file contents, etc. It
+also has to do a lot of number crunching to prepare for the predictive test selection.
 
-Prev: [Hands-on 1](HANDSON1.md)
-Next: [Hands-on 3](HANDSON3.md)
+But subsequent calls to `launchable record build` will be much faster, because Smart Tests will only transfer the new commits that you have added since the last build.
+
+## Request and inspect a subset to test
+Now, you declare the start of a new test session; A test session is an act of running tests against a specific build. Test selection and recording of test results are done against a test session.
+
+ refs: [Documentation](https://www.launchableinc.com/docs/concepts/test-session/)
+
+ ```
+ launchable record session --build mychange1 > session.txt
+ ```
+
+When you record a new test session, Smart Tests will return a session ID, which is stored in `session.txt` file.
+
+Now, let's have Smart Tests select the best set of tests to run for this test session.
+
+ ```
+ launchable subset --session $(cat session.txt) --get-tests-from-guess file > subset.txt
+ cat subset.txt
+```
+
+Since you haven't run any tests yet, Smart Tests will select files in your repository
+that looks like tests, and order them such that tests relevant to most recent changes are prioritized.
+
+> [!TIP]
+> We'll use this baseline `subset.txt` later to see how additional changes affect the test selection,
+> so please keep this file around.
 
 
+As you run and record test results, Smart Tests will learn from the results and improve its selection.
+Among other things, you will be able to specify the size of the subset you'd like to obtain, for example
+"give me 10 minutes worth of tests to run".
+
+
+
+## Make a change you want to test, and see how that affects the subset
+When a developer makes a change to the code, we want Smart Tests to select the tests that
+are most relevant to that change. To experiment with this, let's make a small change.
+Don't worry, the commit you'll create will stay in your computer.
+
+```
+vim <UPDATE YOUR APP or TEST CODE>
+git commit --all --message test
+```
+
+We now have a new software version to test, so we need to record it as a new build:
+
+```
+launchable record build --name mychange2
+```
+
+Create a new test session against the new build and request a subset again:
+
+```
+launchable record session --build mychange2 > session2.txt
+launchable subset --session $(cat session2.txt) --get-tests-from-guess file > subset2.txt
+```
+
+Compare the results between the first and the second subsets:
+
+```
+launchable compare subsets subset.txt subset2.txt
+```
+
+The command should display the rank of every test in those two subsets, and highlight the differences in the rank.
+You should see that the tests relevant to your change bubble up in the rank.
+
+
+You can now move on to [the next step](HANDSON3.md).
