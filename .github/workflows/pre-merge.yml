@@ -5,7 +5,7 @@ on:
 env:
   LAUNCHABLE_ORGANIZATION: "launchable-demo"
   LAUNCHABLE_WORKSPACE: "hands-on-lab"
-# Mark Maxwell test
+
 jobs:
   PreMergeTest:
     runs-on: ubuntu-latest
