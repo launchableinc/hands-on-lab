@@ -1,19 +1,41 @@
-name: Launchable Demo
-
+name: Smart Tests Demo
 on:
   pull_request:
   workflow_dispatch:
+env:
+  LAUNCHABLE_ORGANIZATION: "launchable-demo"
+  LAUNCHABLE_WORKSPACE: "hands-on-lab"
 
 jobs:
   PreMergeTest:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-java@v4
         with:
           java-version: 21
           distribution: "adopt"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install Launchable command
+        run: pip install --user --upgrade launchable~=1.0
+      - name: Launchable verify
+        run: launchable verify
+      - name: Launchable record build
+        run: launchable record build --name ${{github.run_id }}
       - name: Compile
         run: mvn compile
+      - name: Launchable subset
+        run: |
+          launchable record session --build ${{ github.run_id }} --observation --test-suite unit-test > session.txt
+          launchable subset --session $(cat session.txt) --target 50% maven src/test/java > launchable-subset.txt
+          cat launchable-subset.txt
       - name: Test
-        run: mvn test
+        run: mvn test -Dsurefire.includesFile=launchable-subset.txt
+      - name: Launchable record tests
+        if: always()
+        run: launchable record tests --session $(cat session.txt) maven ./**/target/surefire-reports
+        
